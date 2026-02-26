@@ -25,6 +25,8 @@ test_lm <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10){
         X_test <- X[c_index,]
         Y_test <- Y[c_index]
         MSE_test_real[j] <- mean((Y_test - X_test%*%Coefs)^2)
+        rm(X_train, Y_train, X_test, Y_test, fit, Coefs, Cell1, Cell2)
+        gc()
 
         #pb1$tick()
         Sys.sleep(1 / 100)
@@ -56,6 +58,8 @@ test_lm <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10){
             X_test <- X[c_index,]
             Y_test <- Y2[c_index]
             MSE_test_back[[i]][j] <- mean((Y_test - X_test%*%Coefs)^2)
+            rm(X_train, Y_train, X_test, Y_test, fit, Coefs, Cell1, Cell2)
+            gc()
         }
         #pb2$tick()
         Sys.sleep(1 / 100)

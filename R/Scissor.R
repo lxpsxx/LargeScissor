@@ -46,6 +46,8 @@
 #'
 #' @references Duanchen Sun and Zheng Xia (2021): Phenotype-guided subpopulation identification from single-cell sequencing data. Nature Biotechnology.
 #' @import Seurat Matrix preprocessCore
+#' @importFrom Rcpp evalCpp
+#' @useDynLib LargeScissor, .registration = TRUE
 #' @export
 Scissor <- function(bulk_dataset, sc_dataset, phenotype, tag = NULL,
                     alpha = NULL, cutoff = 0.2, family = c("gaussian","binomial","cox"),
@@ -60,25 +62,42 @@ Scissor <- function(bulk_dataset, sc_dataset, phenotype, tag = NULL,
         if (length(common) == 0) {
             stop("There is no common genes between the given single-cell and bulk samples.")
         }
-        if (class(sc_dataset) == "Seurat"){
-            sc_exprs <- as.matrix(sc_dataset@assays$RNA@data)
-            network  <- as.matrix(sc_dataset@graphs$RNA_snn)
-        }else{
-            sc_exprs <- as.matrix(sc_dataset)
-            Seurat_tmp <- CreateSeuratObject(sc_dataset)
-            Seurat_tmp <- FindVariableFeatures(Seurat_tmp, selection.method = "vst", verbose = F)
-            Seurat_tmp <- ScaleData(Seurat_tmp, verbose = F)
-            Seurat_tmp <- RunPCA(Seurat_tmp, features = VariableFeatures(Seurat_tmp), verbose = F)
-            Seurat_tmp <- FindNeighbors(Seurat_tmp, dims = 1:10, verbose = F)
-            network  <- as.matrix(Seurat_tmp@graphs$RNA_snn)
+        if (inherits(sc_dataset, "Seurat")){
+          # ==== LargeScissor Patch: 动态适配 Seurat v3/v4/v5 ====
+          if (utils::packageVersion("SeuratObject") >= "5.0.0") {
+            sc_sparse <- GetAssayData(sc_dataset, assay = "RNA", layer = "data")
+          } else {
+            sc_sparse <- GetAssayData(sc_dataset, assay = "RNA", slot = "data")
+          }
+          # ==================================================================
+          sc_exprs  <- as.matrix(sc_sparse[common, , drop = FALSE])
+          network   <- methods::as(sc_dataset@graphs$RNA_snn, "dgCMatrix")
+        } else {
+          sc_exprs <- as.matrix(sc_dataset[common, , drop = FALSE])
+          
+          Seurat_tmp <- CreateSeuratObject(sc_dataset)
+          Seurat_tmp <- FindVariableFeatures(Seurat_tmp, selection.method = "vst", verbose = F)
+          Seurat_tmp <- ScaleData(Seurat_tmp, verbose = F)
+          Seurat_tmp <- RunPCA(Seurat_tmp, features = VariableFeatures(Seurat_tmp), verbose = F)
+          Seurat_tmp <- FindNeighbors(Seurat_tmp, dims = 1:10, verbose = F)
+          network  <- methods::as(Seurat_tmp@graphs$RNA_snn, "dgCMatrix")
         }
-        diag(network) <- 0
-        network[which(network != 0)] <- 1
-
-        dataset0 <- cbind(bulk_dataset[common,], sc_exprs[common,])         # Dataset before quantile normalization.
-        dataset1 <- normalize.quantiles(dataset0)                           # Dataset after  quantile normalization.
+        
+        Matrix::diag(network) <- 0
+        if (length(network@x)) network@x[] <- 1
+        
+        
+        dataset0 <- cbind(bulk_dataset[common, , drop = FALSE], sc_exprs)
+        dataset0 <- as.matrix(dataset0)
+        dataset0 <- matrix(as.numeric(dataset0), nrow = nrow(dataset0), dimnames = dimnames(dataset0))
+        
+        dataset1 <- preprocessCore::normalize.quantiles(dataset0)
         rownames(dataset1) <- rownames(dataset0)
         colnames(dataset1) <- colnames(dataset0)
+        
+        
+        rm(dataset0); gc()
+        # =================================================================================
 
         Expression_bulk <- dataset1[,1:ncol(bulk_dataset)]
         Expression_cell <- dataset1[,(ncol(bulk_dataset) + 1):ncol(dataset1)]

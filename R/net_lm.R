@@ -42,12 +42,15 @@ LmL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NUL
 
     Omega=rbind(0,cbind(0,Omega)); sgn1=c(1,sgn) # intercept
     ## Check Omega: positive off-diagonal, zero diagonal
-    if (any(diag(Omega)!=0)) {
-      diag(Omega)=0
-      # cat("Diagonal of Omega was set to all zeros\n")
-    }
+    
+    # ==== LargeScissor Patch (Ultimate) ====
+    Omega <- Matrix::bdiag(0, Omega)
+    sgn1 <- c(1, sgn) # intercept
+    Matrix::diag(Omega) <- 0
+    # =======================================
+    
     if (any(Omega<0)) {
-      Omega=abs(Omega)
+      Omega@x=abs(Omega@x)
       # cat("Off-diagonal of Omega was foced to non-negative values\n")
     }
 

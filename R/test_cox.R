@@ -34,6 +34,8 @@ test_cox <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10){
         c_index_test_real[j] <- concordance(res.cox)$concordance
 
         #pb1$tick()
+        rm(X_train, Y_train, X_test, Y_test, fit, test_data, res.cox, Coefs, Cell1, Cell2)
+        gc()
         Sys.sleep(1 / 100)
         if (j == nfold) cat("Finished!\n")
     }
@@ -67,6 +69,8 @@ test_cox <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10){
             colnames(test_data) <- c("OS_time", "Status", "Prediction")
             res.cox <- coxph(Surv(OS_time, Status) ~ Prediction, data = test_data)
             c_index_test_back[[i]][j] <- concordance(res.cox)$concordance
+            rm(X_train, Y_train, X_test, Y_test, fit, test_data, res.cox, Coefs, Cell1, Cell2)
+            gc()
         }
         #pb2$tick()
         Sys.sleep(1 / 100)

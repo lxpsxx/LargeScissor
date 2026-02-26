@@ -11,7 +11,7 @@ using namespace Rcpp;
 
 // scaleC
 List scaleC(Eigen::MatrixXd X);
-static SEXP _Scissor_scaleC_try(SEXP XSEXP) {
+static SEXP _LargeScissor_scaleC_try(SEXP XSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
@@ -19,11 +19,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_scaleC(SEXP XSEXP) {
+RcppExport SEXP _LargeScissor_scaleC(SEXP XSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_scaleC_try(XSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_scaleC_try(XSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -45,7 +45,7 @@ RcppExport SEXP _Scissor_scaleC(SEXP XSEXP) {
 }
 // OmegaC
 List OmegaC(Eigen::MatrixXd& Omega, Eigen::VectorXi& sgn);
-static SEXP _Scissor_OmegaC_try(SEXP OmegaSEXP, SEXP sgnSEXP) {
+static SEXP _LargeScissor_OmegaC_try(SEXP OmegaSEXP, SEXP sgnSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type Omega(OmegaSEXP);
@@ -54,11 +54,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_OmegaC(SEXP OmegaSEXP, SEXP sgnSEXP) {
+RcppExport SEXP _LargeScissor_OmegaC(SEXP OmegaSEXP, SEXP sgnSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_OmegaC_try(OmegaSEXP, sgnSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_OmegaC_try(OmegaSEXP, sgnSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -80,7 +80,7 @@ RcppExport SEXP _Scissor_OmegaC(SEXP OmegaSEXP, SEXP sgnSEXP) {
 }
 // OmegaSC
 List OmegaSC(Eigen::SparseMatrix<double>& OmegaS, Eigen::VectorXi& sgn);
-static SEXP _Scissor_OmegaSC_try(SEXP OmegaSSEXP, SEXP sgnSEXP) {
+static SEXP _LargeScissor_OmegaSC_try(SEXP OmegaSSEXP, SEXP sgnSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::SparseMatrix<double>& >::type OmegaS(OmegaSSEXP);
@@ -89,11 +89,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_OmegaSC(SEXP OmegaSSEXP, SEXP sgnSEXP) {
+RcppExport SEXP _LargeScissor_OmegaSC(SEXP OmegaSSEXP, SEXP sgnSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_OmegaSC_try(OmegaSSEXP, sgnSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_OmegaSC_try(OmegaSSEXP, sgnSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -115,7 +115,7 @@ RcppExport SEXP _Scissor_OmegaSC(SEXP OmegaSSEXP, SEXP sgnSEXP) {
 }
 // maxLambdaLmC
 double maxLambdaLmC(Eigen::MatrixXd X, Eigen::VectorXd y, double alpha, Eigen::VectorXd wbeta, int N0, int p);
-static SEXP _Scissor_maxLambdaLmC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP wbetaSEXP, SEXP N0SEXP, SEXP pSEXP) {
+static SEXP _LargeScissor_maxLambdaLmC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP wbetaSEXP, SEXP N0SEXP, SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
@@ -128,11 +128,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_maxLambdaLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP wbetaSEXP, SEXP N0SEXP, SEXP pSEXP) {
+RcppExport SEXP _LargeScissor_maxLambdaLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP wbetaSEXP, SEXP N0SEXP, SEXP pSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_maxLambdaLmC_try(XSEXP, ySEXP, alphaSEXP, wbetaSEXP, N0SEXP, pSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_maxLambdaLmC_try(XSEXP, ySEXP, alphaSEXP, wbetaSEXP, N0SEXP, pSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -154,7 +154,7 @@ RcppExport SEXP _Scissor_maxLambdaLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SE
 }
 // cvTrimLmC
 Eigen::VectorXd cvTrimLmC(Eigen::VectorXd beta, int nn, int nn2, Eigen::VectorXi loco, Eigen::MatrixXd XF, Eigen::VectorXd yF, int NF, double a0);
-static SEXP _Scissor_cvTrimLmC_try(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEXP locoSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP a0SEXP) {
+static SEXP _LargeScissor_cvTrimLmC_try(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEXP locoSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP a0SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::VectorXd >::type beta(betaSEXP);
@@ -169,11 +169,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_cvTrimLmC(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEXP locoSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP a0SEXP) {
+RcppExport SEXP _LargeScissor_cvTrimLmC(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEXP locoSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP a0SEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_cvTrimLmC_try(betaSEXP, nnSEXP, nn2SEXP, locoSEXP, XFSEXP, yFSEXP, NFSEXP, a0SEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_cvTrimLmC_try(betaSEXP, nnSEXP, nn2SEXP, locoSEXP, XFSEXP, yFSEXP, NFSEXP, a0SEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -195,7 +195,7 @@ RcppExport SEXP _Scissor_cvTrimLmC(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEX
 }
 // EnetLmC
 List EnetLmC(Eigen::MatrixXd X, Eigen::VectorXd y, double alpha, Eigen::VectorXd lambda, int nlambda, int ilambda, Eigen::VectorXd wbeta, int p, int N0, double thresh, int maxit, double thresh2);
-static SEXP _Scissor_EnetLmC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP thresh2SEXP) {
+static SEXP _LargeScissor_EnetLmC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP thresh2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
@@ -214,11 +214,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_EnetLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP thresh2SEXP) {
+RcppExport SEXP _LargeScissor_EnetLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP thresh2SEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_EnetLmC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, ilambdaSEXP, wbetaSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, thresh2SEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_EnetLmC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, ilambdaSEXP, wbetaSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, thresh2SEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -240,7 +240,7 @@ RcppExport SEXP _Scissor_EnetLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP la
 }
 // cvEnetLmC
 List cvEnetLmC(Eigen::MatrixXd X, Eigen::VectorXd y, double alpha, Eigen::VectorXd lambda, int nlambda, Eigen::VectorXd wbeta, int N, int p, double thresh, int maxit, Eigen::MatrixXd XF, Eigen::VectorXd yF, int NF, double thresh2);
-static SEXP _Scissor_cvEnetLmC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP NSEXP, SEXP pSEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP thresh2SEXP) {
+static SEXP _LargeScissor_cvEnetLmC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP NSEXP, SEXP pSEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP thresh2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
@@ -261,11 +261,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_cvEnetLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP NSEXP, SEXP pSEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP thresh2SEXP) {
+RcppExport SEXP _LargeScissor_cvEnetLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP NSEXP, SEXP pSEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP thresh2SEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_cvEnetLmC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, wbetaSEXP, NSEXP, pSEXP, threshSEXP, maxitSEXP, XFSEXP, yFSEXP, NFSEXP, thresh2SEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_cvEnetLmC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, wbetaSEXP, NSEXP, pSEXP, threshSEXP, maxitSEXP, XFSEXP, yFSEXP, NFSEXP, thresh2SEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -287,7 +287,7 @@ RcppExport SEXP _Scissor_cvEnetLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP 
 }
 // NetLmC
 List NetLmC(Eigen::MatrixXd& X, Eigen::VectorXd& y, double alpha, Eigen::VectorXd lambda, int nlambda, int ilambda, Eigen::VectorXd wbeta, Eigen::SparseMatrix<double>& Omega, Eigen::MatrixXd loc, Eigen::VectorXi nadj, int p, int N0, double thresh, int maxit, double thresh2);
-static SEXP _Scissor_NetLmC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP thresh2SEXP) {
+static SEXP _LargeScissor_NetLmC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP thresh2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X(XSEXP);
@@ -309,11 +309,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_NetLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP thresh2SEXP) {
+RcppExport SEXP _LargeScissor_NetLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP thresh2SEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_NetLmC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, ilambdaSEXP, wbetaSEXP, OmegaSEXP, locSEXP, nadjSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, thresh2SEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_NetLmC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, ilambdaSEXP, wbetaSEXP, OmegaSEXP, locSEXP, nadjSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, thresh2SEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -335,7 +335,7 @@ RcppExport SEXP _Scissor_NetLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lam
 }
 // cvNetLmC
 List cvNetLmC(Eigen::MatrixXd& X, Eigen::VectorXd& y, double alpha, Eigen::VectorXd lambda, int nlambda, Eigen::VectorXd wbeta, Eigen::SparseMatrix<double>& Omega, Eigen::MatrixXd loc, Eigen::VectorXi nadj, int N, int p, double thresh, int maxit, Eigen::MatrixXd XF, Eigen::VectorXd yF, int NF, double thresh2);
-static SEXP _Scissor_cvNetLmC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP NSEXP, SEXP pSEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP thresh2SEXP) {
+static SEXP _LargeScissor_cvNetLmC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP NSEXP, SEXP pSEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP thresh2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X(XSEXP);
@@ -359,11 +359,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_cvNetLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP NSEXP, SEXP pSEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP thresh2SEXP) {
+RcppExport SEXP _LargeScissor_cvNetLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP NSEXP, SEXP pSEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP thresh2SEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_cvNetLmC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, wbetaSEXP, OmegaSEXP, locSEXP, nadjSEXP, NSEXP, pSEXP, threshSEXP, maxitSEXP, XFSEXP, yFSEXP, NFSEXP, thresh2SEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_cvNetLmC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, wbetaSEXP, OmegaSEXP, locSEXP, nadjSEXP, NSEXP, pSEXP, threshSEXP, maxitSEXP, XFSEXP, yFSEXP, NFSEXP, thresh2SEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -385,7 +385,7 @@ RcppExport SEXP _Scissor_cvNetLmC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP l
 }
 // maxLambdaCoxC
 double maxLambdaCoxC(Eigen::MatrixXd X, Eigen::VectorXd tevent, int N, Eigen::VectorXi nevent, Eigen::VectorXi nevent1, Eigen::VectorXi loc1, int n, double alpha, Eigen::VectorXd wbeta, int N0, int p);
-static SEXP _Scissor_maxLambdaCoxC_try(SEXP XSEXP, SEXP teventSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP alphaSEXP, SEXP wbetaSEXP, SEXP N0SEXP, SEXP pSEXP) {
+static SEXP _LargeScissor_maxLambdaCoxC_try(SEXP XSEXP, SEXP teventSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP alphaSEXP, SEXP wbetaSEXP, SEXP N0SEXP, SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
@@ -403,11 +403,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_maxLambdaCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP alphaSEXP, SEXP wbetaSEXP, SEXP N0SEXP, SEXP pSEXP) {
+RcppExport SEXP _LargeScissor_maxLambdaCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP alphaSEXP, SEXP wbetaSEXP, SEXP N0SEXP, SEXP pSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_maxLambdaCoxC_try(XSEXP, teventSEXP, NSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, alphaSEXP, wbetaSEXP, N0SEXP, pSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_maxLambdaCoxC_try(XSEXP, teventSEXP, NSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, alphaSEXP, wbetaSEXP, N0SEXP, pSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -429,7 +429,7 @@ RcppExport SEXP _Scissor_maxLambdaCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP NSEXP, 
 }
 // pletaCm
 double pletaCm(Eigen::VectorXd& xb, Eigen::VectorXd& exb, Eigen::VectorXi& nevent, Eigen::VectorXi& nevent1, Eigen::VectorXi& loc1, int& n, int& ifast, int& itwo);
-static SEXP _Scissor_pletaCm_try(SEXP xbSEXP, SEXP exbSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP ifastSEXP, SEXP itwoSEXP) {
+static SEXP _LargeScissor_pletaCm_try(SEXP xbSEXP, SEXP exbSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP ifastSEXP, SEXP itwoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::VectorXd& >::type xb(xbSEXP);
@@ -444,11 +444,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_pletaCm(SEXP xbSEXP, SEXP exbSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP ifastSEXP, SEXP itwoSEXP) {
+RcppExport SEXP _LargeScissor_pletaCm(SEXP xbSEXP, SEXP exbSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP ifastSEXP, SEXP itwoSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_pletaCm_try(xbSEXP, exbSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, ifastSEXP, itwoSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_pletaCm_try(xbSEXP, exbSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, ifastSEXP, itwoSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -470,7 +470,7 @@ RcppExport SEXP _Scissor_pletaCm(SEXP xbSEXP, SEXP exbSEXP, SEXP neventSEXP, SEX
 }
 // cvTrimCoxC
 Eigen::VectorXd cvTrimCoxC(Eigen::VectorXd beta, int nn, int nn2, Eigen::VectorXi loco, Eigen::MatrixXd XF, int NF, Eigen::VectorXi neventF, Eigen::VectorXi nevent1F, Eigen::VectorXi loc1F, int nF, Eigen::MatrixXd X, int N, Eigen::VectorXi nevent, Eigen::VectorXi nevent1, Eigen::VectorXi loc1, int n, int ifast, int itwo);
-static SEXP _Scissor_cvTrimCoxC_try(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEXP locoSEXP, SEXP XFSEXP, SEXP NFSEXP, SEXP neventFSEXP, SEXP nevent1FSEXP, SEXP loc1FSEXP, SEXP nFSEXP, SEXP XSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP ifastSEXP, SEXP itwoSEXP) {
+static SEXP _LargeScissor_cvTrimCoxC_try(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEXP locoSEXP, SEXP XFSEXP, SEXP NFSEXP, SEXP neventFSEXP, SEXP nevent1FSEXP, SEXP loc1FSEXP, SEXP nFSEXP, SEXP XSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP ifastSEXP, SEXP itwoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::VectorXd >::type beta(betaSEXP);
@@ -495,11 +495,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_cvTrimCoxC(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEXP locoSEXP, SEXP XFSEXP, SEXP NFSEXP, SEXP neventFSEXP, SEXP nevent1FSEXP, SEXP loc1FSEXP, SEXP nFSEXP, SEXP XSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP ifastSEXP, SEXP itwoSEXP) {
+RcppExport SEXP _LargeScissor_cvTrimCoxC(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEXP locoSEXP, SEXP XFSEXP, SEXP NFSEXP, SEXP neventFSEXP, SEXP nevent1FSEXP, SEXP loc1FSEXP, SEXP nFSEXP, SEXP XSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP ifastSEXP, SEXP itwoSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_cvTrimCoxC_try(betaSEXP, nnSEXP, nn2SEXP, locoSEXP, XFSEXP, NFSEXP, neventFSEXP, nevent1FSEXP, loc1FSEXP, nFSEXP, XSEXP, NSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, ifastSEXP, itwoSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_cvTrimCoxC_try(betaSEXP, nnSEXP, nn2SEXP, locoSEXP, XFSEXP, NFSEXP, neventFSEXP, nevent1FSEXP, loc1FSEXP, nFSEXP, XSEXP, NSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, ifastSEXP, itwoSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -521,7 +521,7 @@ RcppExport SEXP _Scissor_cvTrimCoxC(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SE
 }
 // EnetCoxC
 List EnetCoxC(Eigen::MatrixXd X, Eigen::VectorXd tevent, double alpha, Eigen::VectorXd lambda, int nlambda, int ilambda, Eigen::VectorXd wbeta, int N, Eigen::VectorXi nevent, Eigen::VectorXi nevent1, Eigen::VectorXi loc1, int n, int p, int N0, double thresh, int maxit, int ifast);
-static SEXP _Scissor_EnetCoxC_try(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP) {
+static SEXP _LargeScissor_EnetCoxC_try(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
@@ -545,11 +545,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_EnetCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP) {
+RcppExport SEXP _LargeScissor_EnetCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_EnetCoxC_try(XSEXP, teventSEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, ilambdaSEXP, wbetaSEXP, NSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, ifastSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_EnetCoxC_try(XSEXP, teventSEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, ilambdaSEXP, wbetaSEXP, NSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, ifastSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -571,7 +571,7 @@ RcppExport SEXP _Scissor_EnetCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, S
 }
 // cvEnetCoxC
 List cvEnetCoxC(Eigen::MatrixXd X, Eigen::VectorXd tevent, double alpha, Eigen::VectorXd lambda, int nlambda, Eigen::VectorXd wbeta, int N, Eigen::VectorXi nevent, Eigen::VectorXi nevent1, Eigen::VectorXi loc1, int n, int p, int N0, double thresh, int maxit, int ifast, Eigen::MatrixXd XF, int NF, Eigen::VectorXi neventF, Eigen::VectorXi nevent1F, Eigen::VectorXi loc1F, int nF);
-static SEXP _Scissor_cvEnetCoxC_try(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP, SEXP XFSEXP, SEXP NFSEXP, SEXP neventFSEXP, SEXP nevent1FSEXP, SEXP loc1FSEXP, SEXP nFSEXP) {
+static SEXP _LargeScissor_cvEnetCoxC_try(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP, SEXP XFSEXP, SEXP NFSEXP, SEXP neventFSEXP, SEXP nevent1FSEXP, SEXP loc1FSEXP, SEXP nFSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
@@ -600,11 +600,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_cvEnetCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP, SEXP XFSEXP, SEXP NFSEXP, SEXP neventFSEXP, SEXP nevent1FSEXP, SEXP loc1FSEXP, SEXP nFSEXP) {
+RcppExport SEXP _LargeScissor_cvEnetCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP, SEXP XFSEXP, SEXP NFSEXP, SEXP neventFSEXP, SEXP nevent1FSEXP, SEXP loc1FSEXP, SEXP nFSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_cvEnetCoxC_try(XSEXP, teventSEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, wbetaSEXP, NSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, ifastSEXP, XFSEXP, NFSEXP, neventFSEXP, nevent1FSEXP, loc1FSEXP, nFSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_cvEnetCoxC_try(XSEXP, teventSEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, wbetaSEXP, NSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, ifastSEXP, XFSEXP, NFSEXP, neventFSEXP, nevent1FSEXP, loc1FSEXP, nFSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -626,7 +626,7 @@ RcppExport SEXP _Scissor_cvEnetCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP,
 }
 // NetCoxC
 List NetCoxC(Eigen::MatrixXd& X, Eigen::VectorXd tevent, double alpha, Eigen::VectorXd lambda, int nlambda, int ilambda, Eigen::VectorXd wbeta, Eigen::SparseMatrix<double>& Omega, Eigen::MatrixXd loc, Eigen::VectorXi nadj, int N, Eigen::VectorXi nevent, Eigen::VectorXi nevent1, Eigen::VectorXi loc1, int n, int p, int N0, double thresh, int maxit, int ifast);
-static SEXP _Scissor_NetCoxC_try(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP) {
+static SEXP _LargeScissor_NetCoxC_try(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X(XSEXP);
@@ -653,11 +653,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_NetCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP) {
+RcppExport SEXP _LargeScissor_NetCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_NetCoxC_try(XSEXP, teventSEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, ilambdaSEXP, wbetaSEXP, OmegaSEXP, locSEXP, nadjSEXP, NSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, ifastSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_NetCoxC_try(XSEXP, teventSEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, ilambdaSEXP, wbetaSEXP, OmegaSEXP, locSEXP, nadjSEXP, NSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, ifastSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -679,7 +679,7 @@ RcppExport SEXP _Scissor_NetCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SE
 }
 // cvNetCoxC
 List cvNetCoxC(Eigen::MatrixXd& X, Eigen::VectorXd tevent, double alpha, Eigen::VectorXd lambda, int nlambda, Eigen::VectorXd wbeta, Eigen::SparseMatrix<double>& Omega, Eigen::MatrixXd loc, Eigen::VectorXi nadj, int N, Eigen::VectorXi nevent, Eigen::VectorXi nevent1, Eigen::VectorXi loc1, int n, int p, int N0, double thresh, int maxit, int ifast, Eigen::MatrixXd XF, int NF, Eigen::VectorXi neventF, Eigen::VectorXi nevent1F, Eigen::VectorXi loc1F, int nF);
-static SEXP _Scissor_cvNetCoxC_try(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP, SEXP XFSEXP, SEXP NFSEXP, SEXP neventFSEXP, SEXP nevent1FSEXP, SEXP loc1FSEXP, SEXP nFSEXP) {
+static SEXP _LargeScissor_cvNetCoxC_try(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP, SEXP XFSEXP, SEXP NFSEXP, SEXP neventFSEXP, SEXP nevent1FSEXP, SEXP loc1FSEXP, SEXP nFSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X(XSEXP);
@@ -711,11 +711,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_cvNetCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP, SEXP XFSEXP, SEXP NFSEXP, SEXP neventFSEXP, SEXP nevent1FSEXP, SEXP loc1FSEXP, SEXP nFSEXP) {
+RcppExport SEXP _LargeScissor_cvNetCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP NSEXP, SEXP neventSEXP, SEXP nevent1SEXP, SEXP loc1SEXP, SEXP nSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP ifastSEXP, SEXP XFSEXP, SEXP NFSEXP, SEXP neventFSEXP, SEXP nevent1FSEXP, SEXP loc1FSEXP, SEXP nFSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_cvNetCoxC_try(XSEXP, teventSEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, wbetaSEXP, OmegaSEXP, locSEXP, nadjSEXP, NSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, ifastSEXP, XFSEXP, NFSEXP, neventFSEXP, nevent1FSEXP, loc1FSEXP, nFSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_cvNetCoxC_try(XSEXP, teventSEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, wbetaSEXP, OmegaSEXP, locSEXP, nadjSEXP, NSEXP, neventSEXP, nevent1SEXP, loc1SEXP, nSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, ifastSEXP, XFSEXP, NFSEXP, neventFSEXP, nevent1FSEXP, loc1FSEXP, nFSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -737,7 +737,7 @@ RcppExport SEXP _Scissor_cvNetCoxC(SEXP XSEXP, SEXP teventSEXP, SEXP alphaSEXP, 
 }
 // maxLambdaLogC
 double maxLambdaLogC(Eigen::MatrixXd X, Eigen::VectorXd Z, double alpha, Eigen::VectorXd wbeta, int N0, int p);
-static SEXP _Scissor_maxLambdaLogC_try(SEXP XSEXP, SEXP ZSEXP, SEXP alphaSEXP, SEXP wbetaSEXP, SEXP N0SEXP, SEXP pSEXP) {
+static SEXP _LargeScissor_maxLambdaLogC_try(SEXP XSEXP, SEXP ZSEXP, SEXP alphaSEXP, SEXP wbetaSEXP, SEXP N0SEXP, SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
@@ -750,11 +750,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_maxLambdaLogC(SEXP XSEXP, SEXP ZSEXP, SEXP alphaSEXP, SEXP wbetaSEXP, SEXP N0SEXP, SEXP pSEXP) {
+RcppExport SEXP _LargeScissor_maxLambdaLogC(SEXP XSEXP, SEXP ZSEXP, SEXP alphaSEXP, SEXP wbetaSEXP, SEXP N0SEXP, SEXP pSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_maxLambdaLogC_try(XSEXP, ZSEXP, alphaSEXP, wbetaSEXP, N0SEXP, pSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_maxLambdaLogC_try(XSEXP, ZSEXP, alphaSEXP, wbetaSEXP, N0SEXP, pSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -776,7 +776,7 @@ RcppExport SEXP _Scissor_maxLambdaLogC(SEXP XSEXP, SEXP ZSEXP, SEXP alphaSEXP, S
 }
 // cvTrimLogC
 Eigen::VectorXd cvTrimLogC(Eigen::VectorXd beta, int nn, int nn2, Eigen::VectorXi loco, Eigen::MatrixXd XF, Eigen::VectorXd yF, int NF, double threshP);
-static SEXP _Scissor_cvTrimLogC_try(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEXP locoSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP threshPSEXP) {
+static SEXP _LargeScissor_cvTrimLogC_try(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEXP locoSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP threshPSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::VectorXd >::type beta(betaSEXP);
@@ -791,11 +791,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_cvTrimLogC(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEXP locoSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP threshPSEXP) {
+RcppExport SEXP _LargeScissor_cvTrimLogC(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SEXP locoSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP threshPSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_cvTrimLogC_try(betaSEXP, nnSEXP, nn2SEXP, locoSEXP, XFSEXP, yFSEXP, NFSEXP, threshPSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_cvTrimLogC_try(betaSEXP, nnSEXP, nn2SEXP, locoSEXP, XFSEXP, yFSEXP, NFSEXP, threshPSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -817,7 +817,7 @@ RcppExport SEXP _Scissor_cvTrimLogC(SEXP betaSEXP, SEXP nnSEXP, SEXP nn2SEXP, SE
 }
 // EnetLogC
 List EnetLogC(Eigen::MatrixXd X, Eigen::VectorXd y, double alpha, Eigen::VectorXd lambda, int nlambda, int ilambda, Eigen::ArrayXd wbeta, Eigen::ArrayXd wbetai, int p, int N0, double thresh, int maxit, double threshP);
-static SEXP _Scissor_EnetLogC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP threshPSEXP) {
+static SEXP _LargeScissor_EnetLogC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP threshPSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
@@ -837,11 +837,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_EnetLogC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP threshPSEXP) {
+RcppExport SEXP _LargeScissor_EnetLogC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP threshPSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_EnetLogC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, ilambdaSEXP, wbetaSEXP, wbetaiSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, threshPSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_EnetLogC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, ilambdaSEXP, wbetaSEXP, wbetaiSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, threshPSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -863,7 +863,7 @@ RcppExport SEXP _Scissor_EnetLogC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP l
 }
 // cvEnetLogC
 List cvEnetLogC(Eigen::MatrixXd X, Eigen::VectorXd y, double alpha, Eigen::VectorXd lambda, int nlambda, Eigen::ArrayXd wbeta, Eigen::ArrayXd wbetai, int p, int N0, double thresh, int maxit, Eigen::MatrixXd XF, Eigen::VectorXd yF, int NF, double threshP);
-static SEXP _Scissor_cvEnetLogC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP threshPSEXP) {
+static SEXP _LargeScissor_cvEnetLogC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP threshPSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
@@ -885,11 +885,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_cvEnetLogC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP threshPSEXP) {
+RcppExport SEXP _LargeScissor_cvEnetLogC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP threshPSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_cvEnetLogC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, wbetaSEXP, wbetaiSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, XFSEXP, yFSEXP, NFSEXP, threshPSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_cvEnetLogC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, wbetaSEXP, wbetaiSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, XFSEXP, yFSEXP, NFSEXP, threshPSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -911,7 +911,7 @@ RcppExport SEXP _Scissor_cvEnetLogC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP
 }
 // NetLogC
 List NetLogC(Eigen::MatrixXd X, Eigen::VectorXd y, double alpha, Eigen::VectorXd lambda, int nlambda, int ilambda, Eigen::ArrayXd wbeta, Eigen::ArrayXd wbetai, Eigen::SparseMatrix<double>& Omega, Eigen::MatrixXd loc, Eigen::VectorXi nadj, int p, int N0, double thresh, int maxit, double threshP);
-static SEXP _Scissor_NetLogC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP threshPSEXP) {
+static SEXP _LargeScissor_NetLogC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP threshPSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
@@ -934,11 +934,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_NetLogC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP threshPSEXP) {
+RcppExport SEXP _LargeScissor_NetLogC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP ilambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP threshPSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_NetLogC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, ilambdaSEXP, wbetaSEXP, wbetaiSEXP, OmegaSEXP, locSEXP, nadjSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, threshPSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_NetLogC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, ilambdaSEXP, wbetaSEXP, wbetaiSEXP, OmegaSEXP, locSEXP, nadjSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, threshPSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -960,7 +960,7 @@ RcppExport SEXP _Scissor_NetLogC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP la
 }
 // cvNetLogC
 List cvNetLogC(Eigen::MatrixXd X, Eigen::VectorXd y, double alpha, Eigen::VectorXd lambda, int nlambda, Eigen::ArrayXd wbeta, Eigen::ArrayXd wbetai, Eigen::SparseMatrix<double>& Omega, Eigen::MatrixXd loc, Eigen::VectorXi nadj, int p, int N0, double thresh, int maxit, Eigen::MatrixXd XF, Eigen::VectorXd yF, int NF, double threshP);
-static SEXP _Scissor_cvNetLogC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP threshPSEXP) {
+static SEXP _LargeScissor_cvNetLogC_try(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP threshPSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
@@ -985,11 +985,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _Scissor_cvNetLogC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP threshPSEXP) {
+RcppExport SEXP _LargeScissor_cvNetLogC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP lambdaSEXP, SEXP nlambdaSEXP, SEXP wbetaSEXP, SEXP wbetaiSEXP, SEXP OmegaSEXP, SEXP locSEXP, SEXP nadjSEXP, SEXP pSEXP, SEXP N0SEXP, SEXP threshSEXP, SEXP maxitSEXP, SEXP XFSEXP, SEXP yFSEXP, SEXP NFSEXP, SEXP threshPSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_Scissor_cvNetLogC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, wbetaSEXP, wbetaiSEXP, OmegaSEXP, locSEXP, nadjSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, XFSEXP, yFSEXP, NFSEXP, threshPSEXP));
+        rcpp_result_gen = PROTECT(_LargeScissor_cvNetLogC_try(XSEXP, ySEXP, alphaSEXP, lambdaSEXP, nlambdaSEXP, wbetaSEXP, wbetaiSEXP, OmegaSEXP, locSEXP, nadjSEXP, pSEXP, N0SEXP, threshSEXP, maxitSEXP, XFSEXP, yFSEXP, NFSEXP, threshPSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -1011,7 +1011,7 @@ RcppExport SEXP _Scissor_cvNetLogC(SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP 
 }
 
 // validate (ensure exported C++ functions exist before calling them)
-static int _Scissor_RcppExport_validate(const char* sig) { 
+static int _LargeScissor_RcppExport_validate(const char* sig) { 
     static std::set<std::string> signatures;
     if (signatures.empty()) {
         signatures.insert("List(*scaleC)(Eigen::MatrixXd)");
@@ -1041,61 +1041,61 @@ static int _Scissor_RcppExport_validate(const char* sig) {
 }
 
 // registerCCallable (register entry points for exported C++ functions)
-RcppExport SEXP _Scissor_RcppExport_registerCCallable() { 
-    R_RegisterCCallable("Scissor", "_Scissor_scaleC", (DL_FUNC)_Scissor_scaleC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_OmegaC", (DL_FUNC)_Scissor_OmegaC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_OmegaSC", (DL_FUNC)_Scissor_OmegaSC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_maxLambdaLmC", (DL_FUNC)_Scissor_maxLambdaLmC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_cvTrimLmC", (DL_FUNC)_Scissor_cvTrimLmC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_EnetLmC", (DL_FUNC)_Scissor_EnetLmC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_cvEnetLmC", (DL_FUNC)_Scissor_cvEnetLmC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_NetLmC", (DL_FUNC)_Scissor_NetLmC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_cvNetLmC", (DL_FUNC)_Scissor_cvNetLmC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_maxLambdaCoxC", (DL_FUNC)_Scissor_maxLambdaCoxC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_pletaCm", (DL_FUNC)_Scissor_pletaCm_try);
-    R_RegisterCCallable("Scissor", "_Scissor_cvTrimCoxC", (DL_FUNC)_Scissor_cvTrimCoxC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_EnetCoxC", (DL_FUNC)_Scissor_EnetCoxC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_cvEnetCoxC", (DL_FUNC)_Scissor_cvEnetCoxC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_NetCoxC", (DL_FUNC)_Scissor_NetCoxC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_cvNetCoxC", (DL_FUNC)_Scissor_cvNetCoxC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_maxLambdaLogC", (DL_FUNC)_Scissor_maxLambdaLogC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_cvTrimLogC", (DL_FUNC)_Scissor_cvTrimLogC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_EnetLogC", (DL_FUNC)_Scissor_EnetLogC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_cvEnetLogC", (DL_FUNC)_Scissor_cvEnetLogC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_NetLogC", (DL_FUNC)_Scissor_NetLogC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_cvNetLogC", (DL_FUNC)_Scissor_cvNetLogC_try);
-    R_RegisterCCallable("Scissor", "_Scissor_RcppExport_validate", (DL_FUNC)_Scissor_RcppExport_validate);
+RcppExport SEXP _LargeScissor_RcppExport_registerCCallable() { 
+    R_RegisterCCallable("Scissor", "_LargeScissor_scaleC", (DL_FUNC)_LargeScissor_scaleC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_OmegaC", (DL_FUNC)_LargeScissor_OmegaC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_OmegaSC", (DL_FUNC)_LargeScissor_OmegaSC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_maxLambdaLmC", (DL_FUNC)_LargeScissor_maxLambdaLmC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_cvTrimLmC", (DL_FUNC)_LargeScissor_cvTrimLmC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_EnetLmC", (DL_FUNC)_LargeScissor_EnetLmC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_cvEnetLmC", (DL_FUNC)_LargeScissor_cvEnetLmC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_NetLmC", (DL_FUNC)_LargeScissor_NetLmC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_cvNetLmC", (DL_FUNC)_LargeScissor_cvNetLmC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_maxLambdaCoxC", (DL_FUNC)_LargeScissor_maxLambdaCoxC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_pletaCm", (DL_FUNC)_LargeScissor_pletaCm_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_cvTrimCoxC", (DL_FUNC)_LargeScissor_cvTrimCoxC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_EnetCoxC", (DL_FUNC)_LargeScissor_EnetCoxC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_cvEnetCoxC", (DL_FUNC)_LargeScissor_cvEnetCoxC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_NetCoxC", (DL_FUNC)_LargeScissor_NetCoxC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_cvNetCoxC", (DL_FUNC)_LargeScissor_cvNetCoxC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_maxLambdaLogC", (DL_FUNC)_LargeScissor_maxLambdaLogC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_cvTrimLogC", (DL_FUNC)_LargeScissor_cvTrimLogC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_EnetLogC", (DL_FUNC)_LargeScissor_EnetLogC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_cvEnetLogC", (DL_FUNC)_LargeScissor_cvEnetLogC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_NetLogC", (DL_FUNC)_LargeScissor_NetLogC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_cvNetLogC", (DL_FUNC)_LargeScissor_cvNetLogC_try);
+    R_RegisterCCallable("Scissor", "_LargeScissor_RcppExport_validate", (DL_FUNC)_LargeScissor_RcppExport_validate);
     return R_NilValue;
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_Scissor_scaleC", (DL_FUNC) &_Scissor_scaleC, 1},
-    {"_Scissor_OmegaC", (DL_FUNC) &_Scissor_OmegaC, 2},
-    {"_Scissor_OmegaSC", (DL_FUNC) &_Scissor_OmegaSC, 2},
-    {"_Scissor_maxLambdaLmC", (DL_FUNC) &_Scissor_maxLambdaLmC, 6},
-    {"_Scissor_cvTrimLmC", (DL_FUNC) &_Scissor_cvTrimLmC, 8},
-    {"_Scissor_EnetLmC", (DL_FUNC) &_Scissor_EnetLmC, 12},
-    {"_Scissor_cvEnetLmC", (DL_FUNC) &_Scissor_cvEnetLmC, 14},
-    {"_Scissor_NetLmC", (DL_FUNC) &_Scissor_NetLmC, 15},
-    {"_Scissor_cvNetLmC", (DL_FUNC) &_Scissor_cvNetLmC, 17},
-    {"_Scissor_maxLambdaCoxC", (DL_FUNC) &_Scissor_maxLambdaCoxC, 11},
-    {"_Scissor_pletaCm", (DL_FUNC) &_Scissor_pletaCm, 8},
-    {"_Scissor_cvTrimCoxC", (DL_FUNC) &_Scissor_cvTrimCoxC, 18},
-    {"_Scissor_EnetCoxC", (DL_FUNC) &_Scissor_EnetCoxC, 17},
-    {"_Scissor_cvEnetCoxC", (DL_FUNC) &_Scissor_cvEnetCoxC, 22},
-    {"_Scissor_NetCoxC", (DL_FUNC) &_Scissor_NetCoxC, 20},
-    {"_Scissor_cvNetCoxC", (DL_FUNC) &_Scissor_cvNetCoxC, 25},
-    {"_Scissor_maxLambdaLogC", (DL_FUNC) &_Scissor_maxLambdaLogC, 6},
-    {"_Scissor_cvTrimLogC", (DL_FUNC) &_Scissor_cvTrimLogC, 8},
-    {"_Scissor_EnetLogC", (DL_FUNC) &_Scissor_EnetLogC, 13},
-    {"_Scissor_cvEnetLogC", (DL_FUNC) &_Scissor_cvEnetLogC, 15},
-    {"_Scissor_NetLogC", (DL_FUNC) &_Scissor_NetLogC, 16},
-    {"_Scissor_cvNetLogC", (DL_FUNC) &_Scissor_cvNetLogC, 18},
-    {"_Scissor_RcppExport_registerCCallable", (DL_FUNC) &_Scissor_RcppExport_registerCCallable, 0},
+    {"_LargeScissor_scaleC", (DL_FUNC) &_LargeScissor_scaleC, 1},
+    {"_LargeScissor_OmegaC", (DL_FUNC) &_LargeScissor_OmegaC, 2},
+    {"_LargeScissor_OmegaSC", (DL_FUNC) &_LargeScissor_OmegaSC, 2},
+    {"_LargeScissor_maxLambdaLmC", (DL_FUNC) &_LargeScissor_maxLambdaLmC, 6},
+    {"_LargeScissor_cvTrimLmC", (DL_FUNC) &_LargeScissor_cvTrimLmC, 8},
+    {"_LargeScissor_EnetLmC", (DL_FUNC) &_LargeScissor_EnetLmC, 12},
+    {"_LargeScissor_cvEnetLmC", (DL_FUNC) &_LargeScissor_cvEnetLmC, 14},
+    {"_LargeScissor_NetLmC", (DL_FUNC) &_LargeScissor_NetLmC, 15},
+    {"_LargeScissor_cvNetLmC", (DL_FUNC) &_LargeScissor_cvNetLmC, 17},
+    {"_LargeScissor_maxLambdaCoxC", (DL_FUNC) &_LargeScissor_maxLambdaCoxC, 11},
+    {"_LargeScissor_pletaCm", (DL_FUNC) &_LargeScissor_pletaCm, 8},
+    {"_LargeScissor_cvTrimCoxC", (DL_FUNC) &_LargeScissor_cvTrimCoxC, 18},
+    {"_LargeScissor_EnetCoxC", (DL_FUNC) &_LargeScissor_EnetCoxC, 17},
+    {"_LargeScissor_cvEnetCoxC", (DL_FUNC) &_LargeScissor_cvEnetCoxC, 22},
+    {"_LargeScissor_NetCoxC", (DL_FUNC) &_LargeScissor_NetCoxC, 20},
+    {"_LargeScissor_cvNetCoxC", (DL_FUNC) &_LargeScissor_cvNetCoxC, 25},
+    {"_LargeScissor_maxLambdaLogC", (DL_FUNC) &_LargeScissor_maxLambdaLogC, 6},
+    {"_LargeScissor_cvTrimLogC", (DL_FUNC) &_LargeScissor_cvTrimLogC, 8},
+    {"_LargeScissor_EnetLogC", (DL_FUNC) &_LargeScissor_EnetLogC, 13},
+    {"_LargeScissor_cvEnetLogC", (DL_FUNC) &_LargeScissor_cvEnetLogC, 15},
+    {"_LargeScissor_NetLogC", (DL_FUNC) &_LargeScissor_NetLogC, 16},
+    {"_LargeScissor_cvNetLogC", (DL_FUNC) &_LargeScissor_cvNetLogC, 18},
+    {"_LargeScissor_RcppExport_registerCCallable", (DL_FUNC) &_LargeScissor_RcppExport_registerCCallable, 0},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_Scissor(DllInfo *dll) {
+RcppExport void R_init_LargeScissor(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

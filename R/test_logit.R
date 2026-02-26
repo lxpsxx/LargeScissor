@@ -28,6 +28,8 @@ test_logit <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10){
         Y_test <- Y[c_index]
         score_test <- 1/(1+exp(-X_test%*%Coefs-fit$Beta[1,index]))[,1]
         AUC_test_real[j] <- roc(Y_test, score_test, direction = "<", quiet = T)$auc
+        rm(X_train, Y_train, X_test, Y_test, fit, Coefs, Cell1, Cell2, score_test)
+        gc()
 
         #pb1$tick()
         Sys.sleep(1 / 100)
@@ -61,6 +63,8 @@ test_logit <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10){
             Y_test <- Y2[c_index]
             score_test <- 1/(1+exp(-X_test%*%Coefs-fit$Beta[1,index]))[,1]
             AUC_test_back[[i]][j] <- roc(Y_test, score_test, direction = "<", quiet = T)$auc
+            rm(X_train, Y_train, X_test, Y_test, fit, Coefs, Cell1, Cell2, score_test)
+            gc()
         }
         #pb2$tick()
         Sys.sleep(1 / 100)
