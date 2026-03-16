@@ -1,5 +1,5 @@
 Package: LargeScissor
-Version: 1.0.0
+Version: 1.2.0
 Title: Large-Scale Optimized Single-Cell Identification of Subpopulations with bulk Sample phenOtype coRrelation
 Authors@R: c(
     person("Duanchen", "Sun", role = "aut", email = "sund@ohsu.edu"),

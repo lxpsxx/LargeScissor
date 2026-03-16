@@ -4,7 +4,7 @@
 #####  Cox model  #####
 #######################
 
-CoxL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NULL, nfolds=1, foldid=NULL, inzero=TRUE, wbeta=rep(1,ncol(x)), sgn=rep(1,ncol(x)), isd=FALSE, keep.beta=FALSE, ifast=TRUE, thresh=1e-6, maxit=1e+5) {
+CoxL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NULL, nfolds=1, foldid=NULL, inzero=TRUE, wbeta=rep(1,ncol(x)), sgn=rep(1,ncol(x)), isd=FALSE, keep.beta=FALSE, ifast=TRUE, thresh=1e-6, maxit=1e+5, Mthread=FALSE, Mcore=1L) {
   # x=xi; y=yi
   # Omega=NULL; alpha=0.5; lambda=NULL; nlambda=10; rlambda=NULL; nfolds=10; foldid=NULL; ifast=TRUE; thresh=1e-6; maxit=1e+5; isd=FALSE; wbeta=rep(1,ncol(x)); sgn=rep(1,ncol(x))
 
@@ -33,25 +33,7 @@ CoxL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NU
   } else {
     penalty=ifelse(alpha==1, "Lasso", "Net")
     adaptive=c(ifelse(any(wbeta!=1), TRUE, FALSE),ifelse(any(sgn!=1), TRUE, FALSE))
-
-    # ==== LargeScissor Patch (Ultimate) ====
-    Omega <- Matrix::bdiag(0, Omega)
-    sgn1 <- c(1, sgn) # intercept
-    Matrix::diag(Omega) <- 0
-    # =======================================
-    
-    if (any(Omega<0)) {
-      Omega@x=abs(Omega@x)
-      # cat("Off-diagonal of Omega was foced to non-negative values\n")
-    }
-
-    ### Correlation/Adjacency matrix
-    if (inherits(Omega, "dgCMatrix")) {
-      W=OmegaSC(Omega, sgn1); W$loc=W$loc+1
-    } else {
-      W=OmegaC(Omega, sgn1); W$loc=W$loc+1
-    }
-    rm(Omega)
+    W=prepare_net_graph(Omega, sgn, add_intercept=FALSE)
   }
 
 
@@ -90,23 +72,53 @@ CoxL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NU
     tb=table(foldid);N0i=numeric(nfolds)
     for (i in 1:nfolds)
       N0i[i]=sum(tb[-i])
+    fold_index=seq_len(nfolds)
 
-    prepk=list()
-    for (i in 1:nfolds) {
+    prepk=vector("list", nfolds)
+    for (i in fold_index) {
       temid=which(foldid!=i)
       prepk[[i]]=PrepCox(x[temid, ], y[temid, ])
     }
     weighti=as.vector(tapply(y[, "status"], foldid, sum))
 
-    #####  Cross-validation estimates  #####
-    outi=list(); cvPL=matrix(NA, nrow=nfolds, ncol=nlambdai)
-    for (i in 1:nfolds) {
-      outi[[i]]=switch(penalty,
-                       "Net"=cvNetCoxC(prepk[[i]]$x, prepk[[i]]$tevent, alpha, lambdai, nlambdai, wbeta, W$Omega, W$loc, W$nadj, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, p, N0i[i], thresh, maxit, 0, prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n),
-                       cvEnetCoxC(prepk[[i]]$x, prepk[[i]]$tevent, alpha, lambdai, nlambdai, wbeta, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, p, N0i[i], thresh, maxit, 0, prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n)
-      )
-      cvPL[i, 1:outi[[i]]$nlambda]=outi[[i]]$lf[1:outi[[i]]$nlambda]-outi[[i]]$ll[1:outi[[i]]$nlambda]
+    compute_trim_cox_rows <- function(Betai, BetaSTDi, numi, numi2) {
+      fold_rows <- parallel_task_apply(fold_index, function(i) {
+        Betaj=Betai[, i]; BetaSTDj=BetaSTDi[, i]
+        numj=min(Betao[i], numi)
+        if (numi2 > 0) {
+          if (numj==0) {
+            return(cvTrimCoxC(c(0.0, 0.0), numj, numi2, c(0, 0), prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n, prepk[[i]]$x, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, 0, 1))
+          }
+
+          BetaSTDjj=BetaSTDj
+          BetaSTDjj[wbeta==0]=max(abs(BetaSTDj))+1
+          temo=rank(-abs(BetaSTDjj), ties.method="min")
+
+          temo=data.frame(temo[which(temo<=numj)], which(temo<=numj))
+          temo=temo[order(temo[, 1]), ]
+          return(cvTrimCoxC(Betaj[temo[, 2]], numj, numi2, temo[, 2]-1, prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n, prepk[[i]]$x, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, 0, 1))
+        }
+
+        cvTrimCoxC(c(0.0, 0.0), 0, 0, c(0, 0), prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n, prepk[[i]]$x, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, 0, 1)
+      }, Mthread = Mthread, Mcore = Mcore)
+
+      do.call(rbind, fold_rows)
     }
+
+    #####  Cross-validation estimates  #####
+    fold_results <- parallel_task_apply(fold_index, function(i) {
+      outi_i=switch(penalty,
+                    "Net"=cvNetCoxC(prepk[[i]]$x, prepk[[i]]$tevent, alpha, lambdai, nlambdai, wbeta, W$Omega, W$loc, W$nadj, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, p, N0i[i], thresh, maxit, 0, prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n),
+                    cvEnetCoxC(prepk[[i]]$x, prepk[[i]]$tevent, alpha, lambdai, nlambdai, wbeta, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, p, N0i[i], thresh, maxit, 0, prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n)
+      )
+      cv_row=rep(NA_real_, nlambdai)
+      if (outi_i$nlambda > 0) {
+        cv_row[1:outi_i$nlambda]=outi_i$lf[1:outi_i$nlambda]-outi_i$ll[1:outi_i$nlambda]
+      }
+      list(outi=outi_i, cv=cv_row)
+    }, Mthread = Mthread, Mcore = Mcore)
+    outi=lapply(fold_results, function(res) res$outi)
+    cvPL=do.call(rbind, lapply(fold_results, function(res) res$cv))
 
     temi=apply(abs(cvPL)==Inf,2,sum,na.rm=TRUE)
     if (any(temi>0)) {
@@ -150,28 +162,9 @@ CoxL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NU
       numi2=min(max(Betao), numi)
 
       if (numi2>0) {
-        cvPL=matrix(NA, nrow=nfolds, ncol=numi2); i=1
-        for (i in 1:nfolds) {
-          Betaj=Betai[, i]; BetaSTDj=BetaSTDi[, i]
-          numj=min(Betao[i], numi)
-          if (numj==0) {
-
-            cvPL[i, ]=cvTrimCoxC(c(0.0, 0.0), numj, numi2, c(0, 0), prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n, prepk[[i]]$x, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, 0, 1)
-
-          } else {
-            BetaSTDjj=BetaSTDj
-            BetaSTDjj[wbeta==0]=max(abs(BetaSTDj))+1
-            temo=rank(-abs(BetaSTDjj), ties.method="min")
-
-            temo=data.frame(temo[which(temo<=numj)], which(temo<=numj))
-            temo=temo[order(temo[, 1]), ]
-            cvPL[i, ]=cvTrimCoxC(Betaj[temo[, 2]], numj, numi2, temo[, 2]-1, prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n, prepk[[i]]$x, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, 0, 1)
-          }
-        }
+        cvPL=compute_trim_cox_rows(Betai, BetaSTDi, numi, numi2)
       } else {
-        cvPL=matrix(NA, nrow=nfolds, ncol=1)
-        for (i in 1:nfolds)
-          cvPL[i, ]=cvTrimCoxC(c(0.0, 0.0), 0, 0, c(0, 0), prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n, prepk[[i]]$x, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, 0, 1)
+        cvPL=compute_trim_cox_rows(Betai, BetaSTDi, numi, numi2)
       }
 
       cvraw=cvPL/weighti;nfoldi=apply(!is.na(cvraw), 2, sum);rm(cvPL) #
@@ -197,26 +190,9 @@ CoxL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NU
             numi2=min(max(Betao), numi)
 
             if (numi2>0) {
-              cvPL=matrix(NA, nrow=nfolds, ncol=numi2)
-              for (i in 1:nfolds ){
-                Betaj=Betai[, i]; BetaSTDj=BetaSTDi[, i]
-                numj=min(Betao[i], numi)
-                if (numj==0) {
-                  cvPL[i, ]=cvTrimCoxC(c(0.0, 0.0), numj, numi2, c(0, 0), prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n, prepk[[i]]$x, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, 0, 1)
-                } else {
-                  BetaSTDjj=BetaSTDj
-                  BetaSTDjj[wbeta==0]=max(abs(BetaSTDj))+1
-                  temo=rank(-abs(BetaSTDjj), ties.method="min")
-
-                  temo=data.frame(temo[which(temo<=numj)], which(temo<=numj))
-                  temo=temo[order(temo[, 1]), ]
-                  cvPL[i, ]=cvTrimCoxC(Betaj[temo[, 2]], numj, numi2, temo[, 2]-1, prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n, prepk[[i]]$x, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, 0, 1)
-                }
-              }
+              cvPL=compute_trim_cox_rows(Betai, BetaSTDi, numi, numi2)
             } else {
-              cvPL=matrix(NA, nrow=nfolds, ncol=1)
-              for(i in 1:nfolds)
-                cvPL[i, ]=cvTrimCoxC(c(0.0, 0.0), 0, 0, c(0, 0), prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n, prepk[[i]]$x, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, 0, 1)
+              cvPL=compute_trim_cox_rows(Betai, BetaSTDi, numi, numi2)
             }
 
             cvraw=cvPL/weighti;nfoldi=apply(!is.na(cvraw), 2, sum)
@@ -324,7 +300,3 @@ PrepCox=function(x, y){
 
   return(list(x=x, N0=N0, tevent=tevent, N=N, nevent=nevent, nevent1=nevent1, loc1=loc1, n=n))
 }
-
-
-
-

@@ -1,4 +1,4 @@
-test_lm <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10){
+test_lm <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10, Mthread = TRUE, Mcore = 24){
 
     set.seed(1)
     m <- nrow(X)
@@ -35,34 +35,34 @@ test_lm <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10){
 
     print("|**************************************************|")
     print("Perform cross-validation on X with permutated label")
-    MSE_test_back <- list()
-    pb2 <- progress_bar$new(total = n)
-    for (i in 1:n){
-        set.seed(i+100)
-        MSE_test_back[[i]] <- matrix(0, nfold, 1, dimnames = list(paste0("Testing_", 1:nfold), "MSE"))
+    permutation_results <- parallel_task_apply(seq_len(n), function(i) {
+        set.seed(i + 100)
+        mse_test_back <- matrix(0, nfold, 1, dimnames = list(paste0("Testing_", 1:nfold), "MSE"))
         Y2 <- Y[sample(m)]
-        for (j in 1:nfold){
+        for (j in seq_len(nfold)) {
             c_index <- which(index0 == j)
             X_train <- X[-c_index,]
             Y_train <- Y2[-c_index]
             fit <- NULL
-            while (is.null(fit$fit)){
+            while (is.null(fit$fit)) {
                 set.seed(123)
                 fit <- APML1(X_train, Y_train, family = "gaussian", penalty = "Net", alpha = alpha, Omega = network, nlambda = 100)
             }
             index <- which.min(abs(fit$fit$nzero - cell_num))
             Coefs <- as.numeric(fit$Beta[,index])
-            Cell1 <- Coefs[which(Coefs > 0)]
-            Cell2 <- Coefs[which(Coefs < 0)]
 
             X_test <- X[c_index,]
             Y_test <- Y2[c_index]
-            MSE_test_back[[i]][j] <- mean((Y_test - X_test%*%Coefs)^2)
-            rm(X_train, Y_train, X_test, Y_test, fit, Coefs, Cell1, Cell2)
+            mse_test_back[j] <- mean((Y_test - X_test%*%Coefs)^2)
+            rm(X_train, Y_train, X_test, Y_test, fit, Coefs)
             gc()
         }
-        #pb2$tick()
-        Sys.sleep(1 / 100)
+        mse_test_back
+    }, Mthread = Mthread, Mcore = Mcore)
+    MSE_test_back <- vector("list", n)
+    pb2 <- progress_bar$new(total = n)
+    for (i in seq_len(n)) {
+        MSE_test_back[[i]] <- permutation_results[[i]]
         if (i == n) cat("Finished!\n")
     }
     statistic  <- mean(MSE_test_real)
@@ -80,4 +80,3 @@ test_lm <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10){
                 MSE_test_real = MSE_test_real,
                 MSE_test_back = MSE_test_back))
 }
-

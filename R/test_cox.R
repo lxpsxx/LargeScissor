@@ -1,4 +1,4 @@
-test_cox <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10){
+test_cox <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10, Mthread = TRUE, Mcore = 24){
 
     set.seed(1)
     m1 <- sum(Y[,2] == 1)
@@ -42,38 +42,37 @@ test_cox <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10){
 
     print("|**************************************************|")
     print("Perform cross-validation on X with permutated label")
-    c_index_test_back <- list()
-    pb2 <- progress_bar$new(total = n)
-    for (i in 1:n){
-        set.seed(i+100)
-        c_index_test_back[[i]] <- matrix(0, nfold, 1, dimnames = list(paste0("Testing_", 1:nfold),  "Concordance"))
+    permutation_results <- parallel_task_apply(seq_len(n), function(i) {
+        set.seed(i + 100)
+        c_index_test_back <- matrix(0, nfold, 1, dimnames = list(paste0("Testing_", 1:nfold),  "Concordance"))
         Y2 <- Y[sample(nrow(Y)),]
-        for (j in 1:nfold){
+        for (j in seq_len(nfold)) {
             c_index <- which(index0 == j)
-            #c_index <- c(which(Y2[,2] == 1)[which(index1 == j)], which(Y2[,2] == 0)[which(index2 == j)])
             X_train <- X[-c_index,]
             Y_train <- Y2[-c_index,]
             fit <- NULL
-            while (is.null(fit$fit)){
+            while (is.null(fit$fit)) {
                 set.seed(123)
                 fit <- APML1(X_train, Y_train, family = "cox", penalty = "Net", alpha = alpha, Omega = network, nlambda = 100)
             }
             index <- which.min(abs(fit$fit$nzero - cell_num))
             Coefs <- as.numeric(fit$Beta[,index])
-            Cell1 <- Coefs[which(Coefs > 0)]
-            Cell2 <- Coefs[which(Coefs < 0)]
 
             X_test <- X[c_index,]
             Y_test <- Y2[c_index,]
             test_data <- data.frame(cbind(Y_test, X_test%*%Coefs))
             colnames(test_data) <- c("OS_time", "Status", "Prediction")
             res.cox <- coxph(Surv(OS_time, Status) ~ Prediction, data = test_data)
-            c_index_test_back[[i]][j] <- concordance(res.cox)$concordance
-            rm(X_train, Y_train, X_test, Y_test, fit, test_data, res.cox, Coefs, Cell1, Cell2)
+            c_index_test_back[j] <- concordance(res.cox)$concordance
+            rm(X_train, Y_train, X_test, Y_test, fit, test_data, res.cox, Coefs)
             gc()
         }
-        #pb2$tick()
-        Sys.sleep(1 / 100)
+        c_index_test_back
+    }, Mthread = Mthread, Mcore = Mcore)
+    c_index_test_back <- vector("list", n)
+    pb2 <- progress_bar$new(total = n)
+    for (i in seq_len(n)) {
+        c_index_test_back[[i]] <- permutation_results[[i]]
         if (i == n) cat("Finished!\n")
     }
     statistic  <- mean(c_index_test_real)
@@ -91,7 +90,6 @@ test_cox <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10){
                 c_index_test_real = c_index_test_real,
                 c_index_test_back = c_index_test_back))
 }
-
 
 
 

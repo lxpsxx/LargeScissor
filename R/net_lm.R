@@ -4,7 +4,7 @@
 #####  Linear Regression  #####
 ###############################
 
-LmL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NULL, nfolds=1, foldid=NULL, inzero=TRUE, wbeta=rep(1,ncol(x)), sgn=rep(1,ncol(x)), isd=FALSE, iysd=FALSE, keep.beta=FALSE, thresh=1e-6, maxit=1e+5) {
+LmL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NULL, nfolds=1, foldid=NULL, inzero=TRUE, wbeta=rep(1,ncol(x)), sgn=rep(1,ncol(x)), isd=FALSE, iysd=FALSE, keep.beta=FALSE, thresh=1e-6, maxit=1e+5, Mthread=FALSE, Mcore=1L) {
   # alpha=1; lambda=NULL; rlambda=NULL; inzero=TRUE; isd=FALSE; keep.beta=FALSE; thresh=1e-5; maxit=1e+5;
   # Omega=NULL; rlambda=NULL; inzero=TRUE; isd=FALSE; keep.beta=FALSE; thresh=1e-5; maxit=1e+5; lambda=NULL; nlambda=10; sgn=rep(1,ncol(x)); wbeta=rep(1,ncol(x))
   # nfolds=10; foldid=NULL
@@ -39,28 +39,7 @@ LmL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NUL
   } else {
     penalty=ifelse(alpha==1, "Lasso", "Net")
     adaptive=c(ifelse(any(wbeta!=1), TRUE, FALSE),ifelse(any(sgn!=1), TRUE, FALSE))
-
-    Omega=rbind(0,cbind(0,Omega)); sgn1=c(1,sgn) # intercept
-    ## Check Omega: positive off-diagonal, zero diagonal
-    
-    # ==== LargeScissor Patch (Ultimate) ====
-    Omega <- Matrix::bdiag(0, Omega)
-    sgn1 <- c(1, sgn) # intercept
-    Matrix::diag(Omega) <- 0
-    # =======================================
-    
-    if (any(Omega<0)) {
-      Omega@x=abs(Omega@x)
-      # cat("Off-diagonal of Omega was foced to non-negative values\n")
-    }
-
-    ### Correlation/Adjacency matrix
-    if (inherits(Omega, "dgCMatrix")) {
-      W=OmegaSC(Omega, sgn1); W$loc=W$loc+1
-    } else {
-      W=OmegaC(Omega, sgn1); W$loc=W$loc+1
-    }
-    rm(Omega)
+    W=prepare_net_graph(Omega, sgn, add_intercept=FALSE)
   }
 
 
@@ -101,22 +80,51 @@ LmL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NUL
       N0i[i]=sum(tb[-i]); Nf[i]=tb[i]
     }
     weighti=as.vector(tapply(rep(1,N0), foldid, sum))
+    fold_index=seq_len(nfolds)
 
+    compute_trim_lm_rows <- function(Betai, BetaSTDi, numi, numi2, a0i) {
+      fold_rows <- parallel_task_apply(fold_index, function(i) {
+        numj=min(Betao[i], numi); temid=foldid==i
+        Betaj=Betai[, i]; BetaSTDj=BetaSTDi[, i]
+        x1j=x[temid, ,drop=F]
+
+        if (numi2 > 0) {
+          if (numj==0) {
+            return(cvTrimLmC(c(0.0, 0.0), numj, numi2, c(0, 0), x1j, y[temid], Nf[i], a0i[i]))
+          }
+
+          BetaSTDjj=BetaSTDj
+          BetaSTDjj[wbeta==0]=max(abs(BetaSTDj))+1
+          temo=rank(-abs(BetaSTDjj), ties.method="min")
+
+          temo=data.frame(temo[which(temo<=numj)], which(temo<=numj))
+          temo=temo[order(temo[, 1]), ]
+          return(cvTrimLmC(Betaj[temo[, 2]], numj, numi2, temo[, 2]-1, x1j, y[temid], Nf[i], a0i[i]))
+        }
+
+        cvTrimLmC(c(0.0, 0.0), 0, 0, c(0, 0), x1j, y[temid], Nf[i], a0i[i])
+      }, Mthread = Mthread, Mcore = Mcore)
+
+      do.call(rbind, fold_rows)
+    }
 
     #####  Cross-validation estimates  #####
     # ypred=matrix(0,nrow=N0,ncol=nlambdai)
 
-    outi=list(); cvRSS=matrix(NA, nrow=nfolds, ncol=nlambdai)
-    for (i in 1:nfolds) {
+    fold_results <- parallel_task_apply(fold_index, function(i) {
       temid=(foldid==i)
-
-      outi[[i]]=switch(penalty,
-                       "Net"=cvNetLmC(x[!temid, ,drop=F], y[!temid], alpha, lambdai, nlambdai, wbeta, W$Omega, W$loc, W$nadj, N0i[i],  p,  thresh, maxit, x[temid, ,drop=F], y[temid], Nf[i], 1e-5),
-                       cvEnetLmC(x[!temid, ,drop=F], y[!temid], alpha, lambdai, nlambdai, wbeta, N0i[i],p, thresh, maxit, x[temid, ,drop=F], y[temid], Nf[i], 1e-5)
+      outi_i=switch(penalty,
+                    "Net"=cvNetLmC(x[!temid, ,drop=F], y[!temid], alpha, lambdai, nlambdai, wbeta, W$Omega, W$loc, W$nadj, N0i[i],  p,  thresh, maxit, x[temid, ,drop=F], y[temid], Nf[i], 1e-5),
+                    cvEnetLmC(x[!temid, ,drop=F], y[!temid], alpha, lambdai, nlambdai, wbeta, N0i[i],p, thresh, maxit, x[temid, ,drop=F], y[temid], Nf[i], 1e-5)
       )
-
-      cvRSS[i, 1:outi[[i]]$nlambda]=outi[[i]]$RSSp[1:outi[[i]]$nlambda] ## for ith fold
-    }
+      cv_row=rep(NA_real_, nlambdai)
+      if (outi_i$nlambda > 0) {
+        cv_row[1:outi_i$nlambda]=outi_i$RSSp[1:outi_i$nlambda]
+      }
+      list(outi=outi_i, cv=cv_row)
+    }, Mthread = Mthread, Mcore = Mcore)
+    outi=lapply(fold_results, function(res) res$outi)
+    cvRSS=do.call(rbind, lapply(fold_results, function(res) res$cv))
 
     cvRSS=cvRSS[, 1:nlambdai,drop=F]
     cvraw=cvRSS/weighti; nfoldi=apply(!is.na(cvraw), 2, sum); #rm(cvRSS) #
@@ -154,45 +162,7 @@ LmL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NUL
 
       a0i=sapply(outi, function(x){x$a0S[il0]})
 
-      if (numi2>0) {
-        cvRSS=matrix(NA, nrow=nfolds, ncol=numi2)
-        for (i in 1:nfolds) {
-          numj=min(Betao[i], numi); temid=foldid==i
-          Betaj=Betai[, i]; BetaSTDj=BetaSTDi[, i]
-
-          x1j=x[temid, ,drop=F]
-          if (numj==0) {
-            cvRSS[i, ]=cvTrimLmC(c(0.0, 0.0), numj, numi2, c(0, 0), x1j, y[temid], Nf[i], a0i[i])
-          } else {
-
-            BetaSTDjj=BetaSTDj
-            BetaSTDjj[wbeta==0]=max(abs(BetaSTDj))+1
-            temo=rank(-abs(BetaSTDjj), ties.method="min")
-
-            temo=data.frame(temo[which(temo<=numj)], which(temo<=numj))
-            temo=temo[order(temo[, 1]), ]
-            cvRSS[i, ]=cvTrimLmC(Betaj[temo[, 2]], numj, numi2, temo[, 2]-1, x1j, y[temid], Nf[i], a0i[i])
-          }
-        }
-
-        # cvRSSi=matrix(NA, nrow=nfolds, ncol=1)
-        # for (i in 1:nfolds) {
-        #   temid=foldid==i
-        #   x1j=x[temid, ,drop=F]
-        #   cvRSSi[i, ]=cvTrimLmC(c(0.0, 0.0), 0, 0, c(0, 0), x1j, y[temid], Nf[i], a0i[i])
-        # }
-        #
-        # cvRSS=cbind(cvRSSi, cvRSS)
-
-      } else {
-        cvRSS=matrix(NA, nrow=nfolds, ncol=1)
-        for (i in 1:nfolds) {
-          temid=foldid==i
-
-          x1j=x[temid, ,drop=F]
-          cvRSS[i, ]=cvTrimLmC(c(0.0, 0.0), 0, 0, c(0, 0), x1j, y[temid], Nf[i], a0i[i])
-        }
-      }
+      cvRSS=compute_trim_lm_rows(Betai, BetaSTDi, numi, numi2, a0i)
 
       cvraw=cvRSS/weighti; nfoldi=apply(!is.na(cvraw), 2, sum); #rm(cvRSS) #
       cvm[[il0]]=apply(cvraw, 2, weighted.mean, w=weighti, na.rm=TRUE)
@@ -216,34 +186,7 @@ LmL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NUL
             numi2=min(max(Betao), numi)
             # numi2=pmax(min(max(Betao), numi),1)
 
-            if (numi2>0) {
-              cvRSS=matrix(NA, nrow=nfolds, ncol=numi2)
-              for (i in 1:nfolds ){
-                numj=min(Betao[i], numi); temid=foldid==i
-                Betaj=Betai[, i]; BetaSTDj=BetaSTDi[, i]
-
-                x1j=x[temid, ,drop=F]
-                if (numj==0) {
-                  cvRSS[i, ]=cvTrimLmC(c(0.0, 0.0), numj, numi2, c(0, 0), x1j, y[temid], Nf[i], a0i[i])
-                } else {
-                  BetaSTDjj=BetaSTDj
-                  BetaSTDjj[wbeta==0]=max(abs(BetaSTDj))+1
-                  temo=rank(-abs(BetaSTDjj), ties.method="min")
-
-                  temo=data.frame(temo[which(temo<=numj)], which(temo<=numj))
-                  temo=temo[order(temo[, 1]), ]
-                  cvRSS[i, ]=cvTrimLmC(Betaj[temo[, 2]], numj, numi2, temo[, 2]-1, x1j, y[temid], Nf[i], a0i[i])
-                }
-              }
-            } else {
-              cvRSS=matrix(NA, nrow=nfolds, ncol=1)
-              for(i in 1:nfolds) {
-                temid=foldid==i
-
-                x1j=x[temid, ,drop=F]
-                cvRSS[i, ]=cvTrimLmC(c(0.0, 0.0), 0, 0, c(0, 0), x1j, y[temid], Nf[i], a0i[i])
-              }
-            }
+            cvRSS=compute_trim_lm_rows(Betai, BetaSTDi, numi, numi2, a0i)
             cvraw=cvRSS/weighti;nfoldi=apply(!is.na(cvraw), 2, sum)
             rm(cvRSS)
             cvm[[il1[j]]]=apply(cvraw, 2, weighted.mean, w=weighti, na.rm=TRUE)
@@ -306,7 +249,3 @@ LmL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NUL
 
   }
 }
-
-
-
-

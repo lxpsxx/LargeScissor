@@ -12,7 +12,9 @@ reliability.test(
   family = c("gaussian", "binomial", "cox"),
   cell_num,
   n = 100,
-  nfold = 10
+  nfold = 10,
+  Mthread = TRUE,
+  Mcore = 24
 )
 }
 \arguments{
@@ -31,6 +33,10 @@ reliability.test(
 \item{n}{Permutation times.}
 
 \item{nfold}{The fold number in cross-validation.}
+
+\item{Mthread}{Whether to enable multiprocessing for permutation testing. Defaults to \code{TRUE}.}
+
+\item{Mcore}{Number of worker processes when \code{Mthread = TRUE}. Defaults to \code{24}.}
 }
 \value{
 A list containing the following components:
