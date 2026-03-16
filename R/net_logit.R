@@ -97,8 +97,10 @@ LogL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NU
     }
     weighti=as.vector(tapply(rep(1,N0), foldid, sum))
     fold_index=seq_len(nfolds)
+    fold_payload_bytes <- estimate_parallel_payload_bytes(x1, y, if (penalty == "Net") W$Omega else NULL)
 
     compute_trim_log_rows <- function(Betai, BetaSTDi, numi, numi2) {
+      trim_payload_bytes <- estimate_parallel_payload_bytes(x1, y, Betai, BetaSTDi, if (penalty == "Net") W$Omega else NULL)
       fold_rows <- parallel_task_apply(fold_index, function(i) {
         temid=foldid==i; numj=min(Betao[i], numi)
         Betaj=Betai[, i]; BetaSTDj=BetaSTDi[, i]
@@ -112,7 +114,7 @@ LogL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NU
 
         x1j=x1[temid, ,drop=F]
         cvTrimLogC(Betaj[temo[, 2]], numj, numi2, temo[, 2]-1, x1j, y[temid], Nf[i], threshP)
-      }, Mthread = Mthread, Mcore = Mcore)
+      }, Mthread = Mthread, Mcore = Mcore, payload_bytes = trim_payload_bytes)
 
       do.call(rbind, fold_rows)
     }
@@ -161,7 +163,7 @@ LogL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NU
       }
 
       list(outi=outi_i, cv=cv_row)
-    }, Mthread = Mthread, Mcore = Mcore)
+    }, Mthread = Mthread, Mcore = Mcore, payload_bytes = fold_payload_bytes)
     outi=lapply(fold_results, function(res) res$outi)
     cvRSS=do.call(rbind, lapply(fold_results, function(res) res$cv))
 
@@ -269,5 +271,4 @@ LogL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NU
 
   } # folder
 }
-
 

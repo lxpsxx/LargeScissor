@@ -80,8 +80,10 @@ CoxL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NU
       prepk[[i]]=PrepCox(x[temid, ], y[temid, ])
     }
     weighti=as.vector(tapply(y[, "status"], foldid, sum))
+    fold_payload_bytes <- estimate_parallel_payload_bytes(prep0, prepk, if (penalty == "Net") W$Omega else NULL)
 
     compute_trim_cox_rows <- function(Betai, BetaSTDi, numi, numi2) {
+      trim_payload_bytes <- estimate_parallel_payload_bytes(prep0, prepk, Betai, BetaSTDi, if (penalty == "Net") W$Omega else NULL)
       fold_rows <- parallel_task_apply(fold_index, function(i) {
         Betaj=Betai[, i]; BetaSTDj=BetaSTDi[, i]
         numj=min(Betao[i], numi)
@@ -100,7 +102,7 @@ CoxL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NU
         }
 
         cvTrimCoxC(c(0.0, 0.0), 0, 0, c(0, 0), prep0$x, prep0$N, prep0$nevent, prep0$nevent1, prep0$loc1, prep0$n, prepk[[i]]$x, prepk[[i]]$N, prepk[[i]]$nevent, prepk[[i]]$nevent1, prepk[[i]]$loc1, prepk[[i]]$n, 0, 1)
-      }, Mthread = Mthread, Mcore = Mcore)
+      }, Mthread = Mthread, Mcore = Mcore, payload_bytes = trim_payload_bytes)
 
       do.call(rbind, fold_rows)
     }
@@ -116,7 +118,7 @@ CoxL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NU
         cv_row[1:outi_i$nlambda]=outi_i$lf[1:outi_i$nlambda]-outi_i$ll[1:outi_i$nlambda]
       }
       list(outi=outi_i, cv=cv_row)
-    }, Mthread = Mthread, Mcore = Mcore)
+    }, Mthread = Mthread, Mcore = Mcore, payload_bytes = fold_payload_bytes)
     outi=lapply(fold_results, function(res) res$outi)
     cvPL=do.call(rbind, lapply(fold_results, function(res) res$cv))
 

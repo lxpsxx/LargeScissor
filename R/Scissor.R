@@ -66,18 +66,18 @@ Scissor <- function(bulk_dataset, sc_dataset, phenotype, tag = NULL,
         if (length(common) == 0) {
             stop("There is no common genes between the given single-cell and bulk samples.")
         }
+        bulk_exprs <- bulk_dataset[common, , drop = FALSE]
         if (inherits(sc_dataset, "Seurat")){
           # ==== LargeScissor Patch: 动态适配 Seurat v3/v4/v5 ====
           if (utils::packageVersion("SeuratObject") >= "5.0.0") {
-            sc_sparse <- GetAssayData(sc_dataset, assay = "RNA", layer = "data")
+            sc_exprs <- GetAssayData(sc_dataset, assay = "RNA", layer = "data")[common, , drop = FALSE]
           } else {
-            sc_sparse <- GetAssayData(sc_dataset, assay = "RNA", slot = "data")
+            sc_exprs <- GetAssayData(sc_dataset, assay = "RNA", slot = "data")[common, , drop = FALSE]
           }
           # ==================================================================
-          sc_exprs  <- as.matrix(sc_sparse[common, , drop = FALSE])
           network   <- methods::as(sc_dataset@graphs$RNA_snn, "dgCMatrix")
         } else {
-          sc_exprs <- as.matrix(sc_dataset[common, , drop = FALSE])
+          sc_exprs <- sc_dataset[common, , drop = FALSE]
           
           Seurat_tmp <- CreateSeuratObject(sc_dataset)
           Seurat_tmp <- FindVariableFeatures(Seurat_tmp, selection.method = "vst", verbose = F)
@@ -91,16 +91,14 @@ Scissor <- function(bulk_dataset, sc_dataset, phenotype, tag = NULL,
         if (length(network@x)) network@x[] <- 1
         
         
-        dataset0 <- cbind(bulk_dataset[common, , drop = FALSE], sc_exprs)
-        dataset0 <- as.matrix(dataset0)
-        dataset0 <- matrix(as.numeric(dataset0), nrow = nrow(dataset0), dimnames = dimnames(dataset0))
+        dataset0 <- build_scissor_quantile_input(bulk_exprs, sc_exprs)
         
         dataset1 <- preprocessCore::normalize.quantiles(dataset0)
         rownames(dataset1) <- rownames(dataset0)
         colnames(dataset1) <- colnames(dataset0)
         
         
-        rm(dataset0); gc()
+        rm(dataset0, sc_exprs, bulk_exprs); gc()
         # =================================================================================
 
         Expression_bulk <- dataset1[,1:ncol(bulk_dataset)]

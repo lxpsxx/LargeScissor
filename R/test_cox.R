@@ -42,6 +42,7 @@ test_cox <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10, Mthrea
 
     print("|**************************************************|")
     print("Perform cross-validation on X with permutated label")
+    permutation_payload_bytes <- estimate_parallel_payload_bytes(X, Y, network)
     permutation_results <- parallel_task_apply(seq_len(n), function(i) {
         set.seed(i + 100)
         c_index_test_back <- matrix(0, nfold, 1, dimnames = list(paste0("Testing_", 1:nfold),  "Concordance"))
@@ -68,7 +69,7 @@ test_cox <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10, Mthrea
             gc()
         }
         c_index_test_back
-    }, Mthread = Mthread, Mcore = Mcore)
+    }, Mthread = Mthread, Mcore = Mcore, payload_bytes = permutation_payload_bytes)
     c_index_test_back <- vector("list", n)
     pb2 <- progress_bar$new(total = n)
     for (i in seq_len(n)) {
@@ -90,6 +91,5 @@ test_cox <- function(X, Y, network, alpha, cell_num, n = 100, nfold = 10, Mthrea
                 c_index_test_real = c_index_test_real,
                 c_index_test_back = c_index_test_back))
 }
-
 
 

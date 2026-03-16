@@ -81,8 +81,10 @@ LmL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NUL
     }
     weighti=as.vector(tapply(rep(1,N0), foldid, sum))
     fold_index=seq_len(nfolds)
+    fold_payload_bytes <- estimate_parallel_payload_bytes(x, y, if (penalty == "Net") W$Omega else NULL)
 
     compute_trim_lm_rows <- function(Betai, BetaSTDi, numi, numi2, a0i) {
+      trim_payload_bytes <- estimate_parallel_payload_bytes(x, y, Betai, BetaSTDi, if (penalty == "Net") W$Omega else NULL)
       fold_rows <- parallel_task_apply(fold_index, function(i) {
         numj=min(Betao[i], numi); temid=foldid==i
         Betaj=Betai[, i]; BetaSTDj=BetaSTDi[, i]
@@ -103,7 +105,7 @@ LmL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NUL
         }
 
         cvTrimLmC(c(0.0, 0.0), 0, 0, c(0, 0), x1j, y[temid], Nf[i], a0i[i])
-      }, Mthread = Mthread, Mcore = Mcore)
+      }, Mthread = Mthread, Mcore = Mcore, payload_bytes = trim_payload_bytes)
 
       do.call(rbind, fold_rows)
     }
@@ -122,7 +124,7 @@ LmL0=function(x, y, Omega=NULL, alpha=1.0, lambda=NULL, nlambda=100, rlambda=NUL
         cv_row[1:outi_i$nlambda]=outi_i$RSSp[1:outi_i$nlambda]
       }
       list(outi=outi_i, cv=cv_row)
-    }, Mthread = Mthread, Mcore = Mcore)
+    }, Mthread = Mthread, Mcore = Mcore, payload_bytes = fold_payload_bytes)
     outi=lapply(fold_results, function(res) res$outi)
     cvRSS=do.call(rbind, lapply(fold_results, function(res) res$cv))
 
