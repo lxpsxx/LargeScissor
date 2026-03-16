@@ -20,6 +20,8 @@ LargeScissor v1.2 is a Scissor-compatible fork focused on three practical goals:
 
 The package keeps the original phenotype-guided cell selection interface while making the implementation safer for current single-cell analysis pipelines.
 
+In one practical `sc_use` benchmark on a host with 1.0 TiB RAM and dual AMD EPYC 7402 CPUs (96 hardware threads), the single-cell input contained 151,837 cells, the bulk cohort contained 479 samples, and the bulk-single-cell overlap contained 2,160 genes. On this task, the upstream `Scissor` code with only a minimal Seurat v5 access patch completed in 3 h 36 min with a peak RSS of about 786.4 GiB, whereas the current `LargeScissor` code completed the same run using 24 threads in 14 min 19 s with a peak RSS of about 19.2 GiB.
+
 ## Quick Start
 
 Install the current GitHub release with:
