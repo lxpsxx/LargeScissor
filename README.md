@@ -1,17 +1,14 @@
 # LargeScissor: Optimized Scissor for Large-Scale Single-Cell Data
 
 ### About LargeScissor
-The network regularization (Omega matrix) code used in the official `Scissor` R package often encounters Out-of-Memory (OOM) errors when processing large-scale single-cell datasets (e.g., >100,000 cells).
+The original `Scissor` implementation can become memory-intensive on large-scale single-cell datasets, particularly in the network-regularized workflow, because several steps materialize large dense objects; as a result, Out-of-Memory (OOM) errors may occur when cell numbers become very large.
 
 **LargeScissor** Spent half of the Chinese New Year holiday on LargeScissor, I didn't do anything else, basically just three things: First Seurat V5 compatibility, Second preventing dense gene expression matrices, Third keeping the network matrix strictly sparse. I'm quite ashamed, just did a little bit of tiny work. Thank you everyone!
 
-### Installation for LargeScissor
-You can install this memory-optimized version directly from GitHub: devtools::install_github('lxpsxx/LargeScissor')
-
-### Cite and acknowledge: https://github.com/sunduanchen/Scissor
-Sun, D., Guan, X., Moran, A. E., Wu, L. Y., Qian, D. Z., Schedin, P., Dai, M. S., Danilov, A. V., Alumkal, J. J., Adey, A. C., Spellman, P. T., & Xia, Z. (2022). Identifying phenotype-associated subpopulations by integrating bulk and single-cell sequencing data. Nature biotechnology, 40(4), 527–538. https://doi.org/10.1038/s41587-021-01091-3
-
+### Acknowledgements
 Sincere thanks to Sun and others, the original authors of Scissor.
+
+LargeScissor is now maintained with AI-assisted updates to preserve compatibility with the evolving upstream Scissor software environment, including Seurat and related tools.
 
 ## LargeScissor v1.2
 
@@ -24,6 +21,12 @@ LargeScissor v1.2 is a Scissor-compatible fork focused on three practical goals:
 The package keeps the original phenotype-guided cell selection interface while making the implementation safer for current single-cell analysis pipelines.
 
 ## Quick Start
+
+Install the current GitHub release with:
+
+```r
+remotes::install_github("lxpsxx/LargeScissor@v1.2.0")
+```
 
 ```r
 library(LargeScissor)
@@ -117,9 +120,10 @@ LargeScissor v1.2 improves the original package substantially, but it is still a
 - Quantile normalization still requires a dense expression block and can remain memory-intensive on very large inputs
 - Multiprocessing is process-based rather than thread-based, so large `X` and `network` objects can still increase memory pressure
 - Alpha-grid parallelization has not been added in this release
-- The original graph-regularized design in Scissor remains a key strength for stabilizing related cells, but on atlas-scale data, where many near-redundant cells accumulate within a much denser SNN graph, the binarized neighborhood structure can encourage smoother coefficient sharing across broader local neighborhoods rather than sharply isolated single-cell selection; in such settings, a metacell-first workflow is often a pragmatic execution strategy before running Scissor or LargeScissor, which is also consistent with the large-matrix and high-RAM constraints discussed in the upstream repository:
+- The original graph-regularized design in Scissor remains a key strength for stabilizing related cells, but on atlas-scale data, where many near-redundant cells accumulate within a much denser SNN graph, the binarized neighborhood structure can encourage smoother coefficient sharing across broader local neighborhoods rather than sharply isolated single-cell selection; in such settings, a metacell-first workflow is often a pragmatic execution strategy before running Scissor or LargeScissor. This is also consistent with the upstream discussions on large matrices and high RAM usage, together with the original author's public suggestion to merge cells into pseudo-cells or metacells before running Scissor:
   - https://github.com/sunduanchen/Scissor/discussions/3
   - https://github.com/sunduanchen/Scissor/discussions/64
+  - https://github.com/sunduanchen/Scissor/issues/50#issuecomment-1527472087
 
 ## Relationship to Scissor
 
@@ -127,6 +131,16 @@ LargeScissor is built on top of the original Scissor project and should be under
 
 - Original Scissor repository: https://github.com/sunduanchen/Scissor
 - Original tutorial: https://sunduanchen.github.io/Scissor/vignettes/Scissor_Tutorial.html
+
+## How to Cite
+
+If you use LargeScissor in academic work, please cite the original Scissor paper and the LargeScissor repository as follows:
+
+1. Scissor:
+   Sun, D., Guan, X., Moran, A. E., Wu, L. Y., Qian, D. Z., Schedin, P., Dai, M. S., Danilov, A. V., Alumkal, J. J., Adey, A. C., Spellman, P. T., & Xia, Z. (2021). Identifying phenotype-associated subpopulations by integrating bulk and single-cell sequencing data. Nature Biotechnology. https://doi.org/10.1038/s41587-021-01091-3
+
+2. LargeScissor:
+   lxpsxx. LargeScissor: Optimized Scissor for Large-Scale Single-Cell Data. GitHub repository, version v1.2.0, 2026. https://github.com/lxpsxx/LargeScissor
 
 ## License
 
