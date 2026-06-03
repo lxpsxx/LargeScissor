@@ -37,6 +37,8 @@
 #' @param Save_file File name for saving the preprocessed regression inputs into a RData.
 #' @param Load_file File name for loading the preprocessed regression inputs. It can help to tune the model parameter \code{alpha}.
 #' Please see Scissor Tutorial for more details.
+#' @param Mthread Whether to enable multiprocessing for cross-validation. Defaults to \code{TRUE}.
+#' @param Mcore Number of worker processes when \code{Mthread = TRUE}. Defaults to \code{24}.
 #'
 #' @return This function returns a list with the following components:
 #'   \item{para}{A list contains the final model parameters.}
@@ -46,13 +48,17 @@
 #'
 #' @references Duanchen Sun and Zheng Xia (2021): Phenotype-guided subpopulation identification from single-cell sequencing data. Nature Biotechnology.
 #' @import Seurat Matrix preprocessCore
+#' @importFrom Rcpp evalCpp
+#' @useDynLib LargeScissor, .registration = TRUE
 #' @export
 Scissor <- function(bulk_dataset, sc_dataset, phenotype, tag = NULL,
                     alpha = NULL, cutoff = 0.2, family = c("gaussian","binomial","cox"),
-                    Save_file = "Scissor_inputs.RData", Load_file = NULL){
+                    Save_file = "Scissor_inputs.RData", Load_file = NULL,
+                    Mthread = TRUE, Mcore = 24){
     library(Seurat)
     library(Matrix)
     library(preprocessCore)
+    family <- normalize_scissor_family(family)
 
 
     if (is.null(Load_file)){
@@ -60,25 +66,40 @@ Scissor <- function(bulk_dataset, sc_dataset, phenotype, tag = NULL,
         if (length(common) == 0) {
             stop("There is no common genes between the given single-cell and bulk samples.")
         }
-        if (class(sc_dataset) == "Seurat"){
-            sc_exprs <- as.matrix(sc_dataset@assays$RNA@data)
-            network  <- as.matrix(sc_dataset@graphs$RNA_snn)
-        }else{
-            sc_exprs <- as.matrix(sc_dataset)
-            Seurat_tmp <- CreateSeuratObject(sc_dataset)
-            Seurat_tmp <- FindVariableFeatures(Seurat_tmp, selection.method = "vst", verbose = F)
-            Seurat_tmp <- ScaleData(Seurat_tmp, verbose = F)
-            Seurat_tmp <- RunPCA(Seurat_tmp, features = VariableFeatures(Seurat_tmp), verbose = F)
-            Seurat_tmp <- FindNeighbors(Seurat_tmp, dims = 1:10, verbose = F)
-            network  <- as.matrix(Seurat_tmp@graphs$RNA_snn)
+        bulk_exprs <- bulk_dataset[common, , drop = FALSE]
+        if (inherits(sc_dataset, "Seurat")){
+          # ==== LargeScissor Patch: 动态适配 Seurat v3/v4/v5 ====
+          if (utils::packageVersion("SeuratObject") >= "5.0.0") {
+            sc_exprs <- GetAssayData(sc_dataset, assay = "RNA", layer = "data")[common, , drop = FALSE]
+          } else {
+            sc_exprs <- GetAssayData(sc_dataset, assay = "RNA", slot = "data")[common, , drop = FALSE]
+          }
+          # ==================================================================
+          network   <- methods::as(sc_dataset@graphs$RNA_snn, "dgCMatrix")
+        } else {
+          sc_exprs <- sc_dataset[common, , drop = FALSE]
+          
+          Seurat_tmp <- CreateSeuratObject(sc_dataset)
+          Seurat_tmp <- FindVariableFeatures(Seurat_tmp, selection.method = "vst", verbose = F)
+          Seurat_tmp <- ScaleData(Seurat_tmp, verbose = F)
+          Seurat_tmp <- RunPCA(Seurat_tmp, features = VariableFeatures(Seurat_tmp), verbose = F)
+          Seurat_tmp <- FindNeighbors(Seurat_tmp, dims = 1:10, verbose = F)
+          network  <- methods::as(Seurat_tmp@graphs$RNA_snn, "dgCMatrix")
         }
-        diag(network) <- 0
-        network[which(network != 0)] <- 1
-
-        dataset0 <- cbind(bulk_dataset[common,], sc_exprs[common,])         # Dataset before quantile normalization.
-        dataset1 <- normalize.quantiles(dataset0)                           # Dataset after  quantile normalization.
+        
+        Matrix::diag(network) <- 0
+        if (length(network@x)) network@x[] <- 1
+        
+        
+        dataset0 <- build_scissor_quantile_input(bulk_exprs, sc_exprs)
+        
+        dataset1 <- preprocessCore::normalize.quantiles(dataset0)
         rownames(dataset1) <- rownames(dataset0)
         colnames(dataset1) <- colnames(dataset0)
+        
+        
+        rm(dataset0, sc_exprs, bulk_exprs); gc()
+        # =================================================================================
 
         Expression_bulk <- dataset1[,1:ncol(bulk_dataset)]
         Expression_cell <- dataset1[,(ncol(bulk_dataset) + 1):ncol(dataset1)]
@@ -93,38 +114,19 @@ Scissor <- function(bulk_dataset, sc_dataset, phenotype, tag = NULL,
         if (quality_check[3] < 0.01){
             warning("The median correlation between the single-cell and bulk samples is relatively low.")
         }
-        if (family == "binomial"){
-            Y <- as.numeric(phenotype)
-            z <- table(Y)
-            if (length(z) != length(tag)){
-                stop("The length differs between tags and phenotypes. Please check Scissor inputs and selected regression type.")
-            }else{
-                print(sprintf("Current phenotype contains %d %s and %d %s samples.", z[1], tag[1], z[2], tag[2]))
-                print("Perform logistic regression on the given phenotypes:")
-            }
-        }
-        if (family == "gaussian"){
-            Y <- as.numeric(phenotype)
-            z <- table(Y)
-            if (length(z) != length(tag)){
-                stop("The length differs between tags and phenotypes. Please check Scissor inputs and selected regression type.")
-            }else{
-                tmp <- paste(z, tag)
-                print(paste0("Current phenotype contains ", paste(tmp[1:(length(z)-1)], collapse = ", "), ", and ", tmp[length(z)], " samples."))
-                print("Perform linear regression on the given phenotypes:")
-            }
-        }
-        if (family == "cox"){
-            Y <- as.matrix(phenotype)
-            if (ncol(Y) != 2){
-                stop("The size of survival data is wrong. Please check Scissor inputs and selected regression type.")
-            }else{
-                print("Perform cox regression on the given clinical outcomes:")
-            }
-        }
-        save(X, Y, network, Expression_bulk, Expression_cell, file = Save_file)
+        Y <- switch(
+            family,
+            "binomial" = prepare_binomial_response(phenotype, tag),
+            "gaussian" = prepare_gaussian_response(phenotype, tag),
+            "cox" = prepare_cox_response(phenotype)
+        )
+        family_saved <- family
+        save(X, Y, network, Expression_bulk, Expression_cell, family_saved, file = Save_file)
     }else{
         load(Load_file)
+        if (exists("family_saved", inherits = FALSE) && !identical(family_saved, family)) {
+            stop(sprintf("The loaded regression inputs were prepared for family = '%s', not '%s'.", family_saved, family))
+        }
     }
 
     if (is.null(alpha)){
@@ -132,13 +134,33 @@ Scissor <- function(bulk_dataset, sc_dataset, phenotype, tag = NULL,
     }
     for (i in 1:length(alpha)){
         set.seed(123)
-        fit0 <- APML1(X, Y, family = family, penalty = "Net", alpha = alpha[i], Omega = network, nlambda = 100, nfolds = min(10,nrow(X)))
-        fit1 <- APML1(X, Y, family = family, penalty = "Net", alpha = alpha[i], Omega = network, lambda = fit0$lambda.min)
+        fit0 <- APML1(
+            X, Y,
+            family = family,
+            penalty = "Net",
+            alpha = alpha[i],
+            Omega = network,
+            nlambda = 100,
+            nfolds = min(10, nrow(X)),
+            Mthread = Mthread,
+            Mcore = Mcore
+        )
+        fit1 <- APML1(
+            X, Y,
+            family = family,
+            penalty = "Net",
+            alpha = alpha[i],
+            Omega = network,
+            lambda = fit0$lambda.min,
+            Mthread = Mthread,
+            Mcore = Mcore
+        )
         if (family == "binomial"){
             Coefs <- as.numeric(fit1$Beta[2:(ncol(X)+1)])
         }else{
             Coefs <- as.numeric(fit1$Beta)
         }
+        names(Coefs) <- colnames(X)
         Cell1 <- colnames(X)[which(Coefs > 0)]
         Cell2 <- colnames(X)[which(Coefs < 0)]
         percentage <- (length(Cell1) + length(Cell2)) / ncol(X)
@@ -158,4 +180,3 @@ Scissor <- function(bulk_dataset, sc_dataset, phenotype, tag = NULL,
                 Scissor_pos = Cell1,
                 Scissor_neg = Cell2))
 }
-

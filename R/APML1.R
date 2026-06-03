@@ -7,7 +7,7 @@
 #####  Algorithm: one-step coordinate descent  #####
 ####################################################
 
-APML1=function(x, y, family=c("gaussian", "binomial", "cox"), penalty=c("Lasso","Enet", "Net"), Omega=NULL, alpha=1.0, lambda=NULL, nlambda=50, rlambda=NULL, wbeta=rep(1,ncol(x)), sgn=rep(1,ncol(x)), nfolds=1, foldid=NULL, inzero=TRUE, isd=FALSE, iysd=FALSE, keep.beta=FALSE, ifast=TRUE, thresh=1e-7, maxit=1e+5) {
+APML1=function(x, y, family=c("gaussian", "binomial", "cox"), penalty=c("Lasso","Enet", "Net"), Omega=NULL, alpha=1.0, lambda=NULL, nlambda=50, rlambda=NULL, wbeta=rep(1,ncol(x)), sgn=rep(1,ncol(x)), nfolds=1, foldid=NULL, inzero=TRUE, isd=FALSE, iysd=FALSE, keep.beta=FALSE, ifast=TRUE, thresh=1e-7, maxit=1e+5, Mthread=FALSE, Mcore=1L) {
 
   #fcall=match.call()
   family=match.arg(family)
@@ -35,16 +35,15 @@ APML1=function(x, y, family=c("gaussian", "binomial", "cox"), penalty=c("Lasso",
   wbeta=abs(wbeta)
 
   fit=switch(family,
-             "gaussian"=LmL0(x,y,Omega,alpha,lambda,nlambda,rlambda,nfolds,foldid,inzero,wbeta,sgn,isd,iysd,keep.beta,thresh,maxit),
-             "binomial"=LogL0(x,y,Omega,alpha,lambda,nlambda,rlambda,nfolds,foldid,inzero,wbeta,sgn,isd,keep.beta,thresh,maxit,threshP=1e-5),
-             "cox"=CoxL0(x,y,Omega,alpha,lambda,nlambda,rlambda,nfolds,foldid,inzero,wbeta,sgn,isd,keep.beta,ifast,thresh,maxit))
+             "gaussian"=LmL0(x,y,Omega,alpha,lambda,nlambda,rlambda,nfolds,foldid,inzero,wbeta,sgn,isd,iysd,keep.beta,thresh,maxit,Mthread=Mthread,Mcore=Mcore),
+             "binomial"=LogL0(x,y,Omega,alpha,lambda,nlambda,rlambda,nfolds,foldid,inzero,wbeta,sgn,isd,keep.beta,thresh,maxit,threshP=1e-5,Mthread=Mthread,Mcore=Mcore),
+             "cox"=CoxL0(x,y,Omega,alpha,lambda,nlambda,rlambda,nfolds,foldid,inzero,wbeta,sgn,isd,keep.beta,ifast,thresh,maxit,Mthread=Mthread,Mcore=Mcore))
   fit$family=family
 
   #fit$call=fcall
   class(fit)="APML1"
   return(fit)
 }
-
 
 
 

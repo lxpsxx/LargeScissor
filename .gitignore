@@ -1,0 +1,12 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.o
+*.so
+*.dll
+.DS_Store
+# compiled artifacts
+src/*.o
+src/*.so
+src/*.dll

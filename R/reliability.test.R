@@ -22,6 +22,8 @@
 #' @param cell_num The number of the Scissor selected cells.
 #' @param n Permutation times.
 #' @param nfold The fold number in cross-validation.
+#' @param Mthread Whether to enable multiprocessing for permutation testing. Defaults to \code{TRUE}.
+#' @param Mcore Number of worker processes when \code{Mthread = TRUE}. Defaults to \code{24}.
 #'
 #' @return A list containing the following components:
 #'   \item{statistic}{The test statistic.}
@@ -31,21 +33,23 @@
 #'
 #' @import progress Matrix
 #' @export
-reliability.test <- function(X, Y, network, alpha, family = c("gaussian","binomial","cox"), cell_num, n = 100, nfold = 10){
+reliability.test <- function(X, Y, network, alpha, family = c("gaussian","binomial","cox"), cell_num, n = 100, nfold = 10, Mthread = TRUE, Mcore = 24){
 
     library(progress)
     library(Matrix)
+    family <- normalize_scissor_family(family)
 
-    if (family == 'gaussian'){
-        result <- test_lm(X, Y, network, alpha, cell_num, n, nfold)
-    }
-    if (family == 'binomial'){
-        library(pROC)
-        result <- test_logit(X, Y, network, alpha, cell_num, n, nfold)
-    }
-    if (family == 'cox'){
-        library(survival)
-        result <- test_cox(X, Y, network, alpha, cell_num, n, nfold)
-    }
+    result <- switch(
+        family,
+        gaussian = test_lm(X, Y, network, alpha, cell_num, n, nfold, Mthread = Mthread, Mcore = Mcore),
+        binomial = {
+            library(pROC)
+            test_logit(X, Y, network, alpha, cell_num, n, nfold, Mthread = Mthread, Mcore = Mcore)
+        },
+        cox = {
+            library(survival)
+            test_cox(X, Y, network, alpha, cell_num, n, nfold, Mthread = Mthread, Mcore = Mcore)
+        }
+    )
     return(result)
 }

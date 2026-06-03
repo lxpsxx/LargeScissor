@@ -13,7 +13,9 @@ Scissor(
   cutoff = 0.2,
   family = c("gaussian", "binomial", "cox"),
   Save_file = "Scissor_inputs.RData",
-  Load_file = NULL
+  Load_file = NULL,
+  Mthread = TRUE,
+  Mcore = 24
 )
 }
 \arguments{
@@ -48,6 +50,10 @@ can be \code{family = gaussian} for linear regression, \code{family = binomial} 
 
 \item{Load_file}{File name for loading the preprocessed regression inputs. It can help to tune the model parameter \code{alpha}.
 Please see Scissor Tutorial for more details.}
+
+\item{Mthread}{Whether to enable multiprocessing for cross-validation. Defaults to \code{TRUE}.}
+
+\item{Mcore}{Number of worker processes when \code{Mthread = TRUE}. Defaults to \code{24}.}
 }
 \value{
 This function returns a list with the following components:
